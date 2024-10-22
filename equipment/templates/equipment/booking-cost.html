@@ -1,0 +1,153 @@
+{% extends '_base.html' %}
+{% load static %}
+{% load templatehelpers %}
+{% block title %}Booking Information{% endblock %}
+{% block content %}
+{% load crispy_forms_tags %}
+{% include 'equipment/partials/filter-bookings-sidebar.html' %}
+
+<div class="container-fluid px-1 px-lg-3 my-5">
+    <!-- Breadcrumb & Header -->
+    <nav class="row">
+        <div id="page-topnav" class="col">
+            <h2>Equipment</h2>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'equipment_booking_query' %}">Booking Query</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Booking Information</li>
+            </ol>
+        </div>
+    </nav>    
+    <!-- Header -->
+    <div class="row" id="header-block">
+        <div class="col-xl-3">
+            <div class="page-header">
+                <h1>{{ booking.job_reference }}</h1>
+                <h6 class="text-small fw-bold mt-2">Costs</h6>
+            </div>
+        </div>
+        <!-- Search & Buttons -->
+        <div class="col-xl-9">
+            <div class="header-controls">
+                <!-- Actions Menu -->
+                <button class="btn btn-primary btn-lg-fw dropdown-toggle" id="ActionsDropdownMenuButton" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Actions
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="ActionsDropdownMenuButton">
+                    <a class="dropdown-item" href="">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="currentColor" class="dropdown-icon text-danger me-2">
+                            <path d="M200-200h56l345-345-56-56-345 345v56Zm572-403L602-771l56-56q23-23 56.5-23t56.5 23l56 56q23 23 24 55.5T829-660l-57 57Zm-58 59L290-120H120v-170l424-424 170 170Zm-141-29-28-28 56 56-28-28Z"/>
+                        </svg>
+                        Update
+                    </a>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Nav Pills -->
+    <div class="row mb-5">
+        <div class="col">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="{% url 'equipment_booking_detail' booking.pk %}">
+                        Information
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="{% url 'equipment_booking_cost' booking.pk %}">
+                        Cost Overview
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'equipment_booking_invoice' booking.pk %}" target="_blank">
+                        Invoice
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>    
+
+    <!-- Items -->
+    <div class="row">
+        <div class="col-lg-6 mb-4">
+            <div class="base-card p-5 h-100">
+                <div class="card-header"> 
+                    <p class="content-card-header">Booked Items</p>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for booking_item in booking_items %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ booking_item.item.category }}</td>
+                                <td>{{ booking_item.item.manufacturer }} {{ booking_item.item.name }}</td>
+                                <td>£{{ booking_item.value|floatformat:2 }}</td>
+                                <td>£{{ booking_item.total|floatformat:2 }}</td>
+                            </tr>
+                            {% endfor %}                                                                                 
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 mb-4">
+            <div class="base-card p-5 h-100">
+                <div class="card-header"> 
+                    <p class="content-card-header">Cost Breakdown</p>
+                </div>
+                <div class="card-body">                
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="w-50"></th>
+                                <th class="w-50"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="ps-1 fw-bold">Hire Start</td>
+                                <td class="ps-3">{{ booking.start_at|date:"d M Y, H:i" }}</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-1 fw-bold">Hire End</td>
+                                <td class="ps-3">{{ booking.end_at|date:"d M Y, H:i" }}</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-1 fw-bold">Chargable Days</td>
+                                <td class="ps-3">{{ chargeable_days }}</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-1 fw-bold">Sub Total (Excl VAT)</td>
+                                <td class="ps-3">£{{ sub_total|floatformat:2 }}</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-1 fw-bold">VAT ({{ vat_percentage }}%)</td>
+                                <td class="ps-3">£{{ vat_total|floatformat:2 }}</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-1 fw-bold">Total (Incl VAT)</td>
+                                <td class="ps-3">£{{ total_cost_vat|floatformat:2 }}</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-1 fw-bold">Insurable Value</td>
+                                <td class="ps-3">£{{ insure_value|floatformat:2 }}</td>
+                            </tr>                                                               
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

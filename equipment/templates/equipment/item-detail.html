@@ -1,0 +1,258 @@
+{% extends '_base.html' %}
+{% load static %}
+{% load templatehelpers %}
+{% block title %}Item Information{% endblock %}
+{% block content %}
+{% load crispy_forms_tags %}
+{% include 'equipment/partials/filter-bookings-sidebar.html' %}
+
+<div class="container-fluid px-1 px-lg-3 my-5">
+    <!-- Breadcrumb & Header -->
+    <nav class="row">
+        <div id="page-topnav" class="col">
+            <h2>Equipment</h2>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'equipment_item_query' %}">Item Query</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Item Information</li>
+            </ol>
+        </div>
+    </nav>    
+    <!-- Header -->
+    <div class="row" id="header-block">
+        <div class="col-xl-3">
+            <div class="page-header">
+                <h1>{{ item.manufacturer }} {{ item.name }} {{ item.mount|default_if_none:"" }} / {{ item.serial_number|default_if_none:"No Serial" }}</h1>
+            </div>
+        </div>
+        <!-- Search & Buttons -->
+        <div class="col-xl-9">
+            <div class="header-controls">
+                <!-- Actions Menu -->
+                <button class="btn btn-primary btn-lg-fw dropdown-toggle" id="ActionsDropdownMenuButton" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Actions
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="ActionsDropdownMenuButton">
+                    <a class="dropdown-item" href="{% url 'equipment_update_item' item.pk %}?next={{ request.get_full_path|urlencode }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="currentColor" class="dropdown-icon text-danger me-2">
+                            <path d="M200-200h56l345-345-56-56-345 345v56Zm572-403L602-771l56-56q23-23 56.5-23t56.5 23l56 56q23 23 24 55.5T829-660l-57 57Zm-58 59L290-120H120v-170l424-424 170 170Zm-141-29-28-28 56 56-28-28Z"/>
+                        </svg>
+                        Update
+                    </a>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="row h-100">
+        <div class="col-xl-6 mb-4">
+            <div class="base-card h-100">
+                <div class="card-header"> 
+                    <p class="content-card-header">Overview</p>
+                </div>
+                <div class="card-body">               
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="w-25"></th>
+                                <th scope="w-75"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="ps-1 fw-bold">Added to System</td>
+                                <td class="ps-3">{{ item.created_at }}</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-1 fw-bold">Created By</td>
+                                <td class="ps-3">{{ item.created_by|default_if_none:"System" }}</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-1 fw-bold">Last Updated</td>
+                                <td class="ps-3">{{ item.updated_at }}</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-1 fw-bold">Updated By</td>
+                                <td class="ps-3">{{ item.updated_by|default_if_none:"n/a" }}</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-1 fw-bold">Manufacturer</td>
+                                <td class="ps-3">{{ item.manufacturer }}</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-1 fw-bold">Name</td>
+                                <td class="ps-3">{{ item.name }} {{ item.mount|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-1 fw-bold">Category</td>
+                                <td class="ps-3">{{ item.category }}</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-1 fw-bold">Serial</td>
+                                <td class="ps-3">{{ item.serial_number|default_if_none:"n/a" }}</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-1 fw-bold">Model</td>
+                                <td class="ps-3">{{ item.model_number|default_if_none:"n/a" }}</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-1 fw-bold">Barcode</td>
+                                <td class="ps-3">{{ item.barcode }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-6 mb-4">
+            <div class="base-card h-100">
+                <div class="card-header"> 
+                    <p class="content-card-header">Value, Aquisition & Servicing</p>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="w-25"></th>
+                                <th scope="w-75"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="ps-1 fw-bold">Purchase Date</td>
+                                <td class="ps-3">{{ item.purchase_date }}</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-1 fw-bold">Purchase Cost</td>
+                                <td class="ps-3">£{{ item.purchase_cost|floatformat:2 }}</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-1 fw-bold">Depreciation Method</td>
+                                <td class="ps-3">{{ item.depreciation_method|default_if_none:"Declining Balance" }}</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-1 fw-bold">Depreciated Value</td>
+                                <td class="ps-3">£{{ item.depreciated_value }}</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-1 fw-bold">Hire Day Rate</td>
+                                <td class="ps-3">£{{ item.hire_day_rate|floatformat:2 }}</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-1 fw-bold">Last Serviced</td>
+                                <td class="ps-3">{{ item.last_service_date|default_if_none:"n/a" }}</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-1 fw-bold">Service Interval Period</td>
+                                <td class="ps-3">{{ item.service_interval_period|default_if_none:"n/a" }}</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-1 fw-bold">Service Due</td>
+                                <td class="ps-3">{{ item.service_due_date|default_if_none:"n/a" }}</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-1 fw-bold">Status</td>
+                                <td class="ps-3">{{ item.get_status_display }}</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-1 fw-bold">Retired</td>
+                                <td class="ps-3">{{ item.retired|yesno:"Yes, No, 'n/a" }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- Barcode render-->
+                    <!-- <div id="barcode-render" class="pt-4">
+                        <img id="barcode"/>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+
+        <div class="col mb-4">
+            <div class="base-card h-100">
+                <div class="card-header"> 
+                    <p class="content-card-header">Upcoming Bookings</p>
+                </div>
+                <div class="card-body">
+                    {% if upcoming_bookings|length == 0 %}
+                    <div class="table-no-results">
+                        Nothing Here
+                    </div>
+                    {% else %}                    
+                    <div class="table-responsive">
+                        <table class="table align-middle">
+                            <thead>
+                                <tr>
+                                    <th scope="col"></th>
+                                    <th scope="col">Reference</th>
+                                    <th scope="col">Booked By</th>
+                                    <th scope="col">Start</th>
+                                    <th scope="col">End</th>
+                                    <th class=""></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for booking in upcoming_bookings %}
+                                <tr>
+                                    <td>
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="24px" height="24px" fill="currentColor">
+                                            <path d="M687.69-100q-74.92 0-127.46-52.54-52.54-52.54-52.54-127.46 0-74.92 52.54-127.46Q612.77-460 687.69-460q74.93 0 127.46 52.54 52.54 52.54 52.54 127.46 0 74.92-52.54 127.46Q762.62-100 687.69-100Zm66.62-88.46 24.92-24.92-73.84-73.85v-110.46H670v124.92l84.31 84.31Zm-542 48.46q-29.92 0-51.12-21.19Q140-182.39 140-212.31v-535.38q0-29.92 21.19-51.12Q182.39-820 212.31-820h176.23q8.31-29.23 33.96-48.46t57.5-19.23q33.08 0 58.42 19.23 25.35 19.23 33.66 48.46h175.61q29.92 0 51.12 21.19Q820-777.61 820-747.69v245.38q-14.16-9.15-28.77-15.65-14.62-6.5-31.23-11.58v-218.15q0-4.62-3.85-8.46-3.84-3.85-8.46-3.85H660v104.61H300V-760h-87.69q-4.62 0-8.46 3.85-3.85 3.84-3.85 8.46v535.38q0 5.39 3.46 8.85t8.85 3.46h228.54q5.08 16.61 11.77 31.42 6.69 14.81 16.61 28.58H212.31ZM480-755.38q15.46 0 25.81-10.35 10.34-10.35 10.34-25.81 0-15.46-10.34-25.81-10.35-10.34-25.81-10.34-15.46 0-25.81 10.34-10.34 10.35-10.34 25.81 0 15.46 10.34 25.81 10.35 10.35 25.81 10.35Z"/>
+                                        </svg>
+                                    </td>
+                                    <td>{{ booking.job_reference }}</td>
+                                    <td>{{ booking.created_by }}</td>
+                                    <td>{{ booking.start_at }}</td>
+                                    <td>{{ booking.end_at }}</td>
+                                    <td class="kebab-menu">
+                                        <a href="#" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+                                                <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                                            </svg>
+                                        </a>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="{% url 'equipment_booking_detail' booking.pk %}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="currentColor" class="dropdown-icon me-2">
+                                                    <path d="M453-280h60v-240h-60v240Zm26.982-314q14.018 0 23.518-9.2T513-626q0-14.45-9.482-24.225-9.483-9.775-23.5-9.775-14.018 0-23.518 9.775T447-626q0 13.6 9.482 22.8 9.483 9.2 23.5 9.2Zm.284 514q-82.734 0-155.5-31.5t-127.266-86q-54.5-54.5-86-127.341Q80-397.681 80-480.5q0-82.819 31.5-155.659Q143-709 197.5-763t127.341-85.5Q397.681-880 480.5-880q82.819 0 155.659 31.5Q709-817 763-763t85.5 127Q880-563 880-480.266q0 82.734-31.5 155.5T763-197.684q-54 54.316-127 86Q563-80 480.266-80Zm.234-60Q622-140 721-239.5t99-241Q820-622 721.188-721 622.375-820 480-820q-141 0-240.5 98.812Q140-622.375 140-480q0 141 99.5 240.5t241 99.5Zm-.5-340Z"/>
+                                                </svg>
+                                                Information
+                                            </a>
+                                            <a class="dropdown-item" href="">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="currentColor" class="dropdown-icon me-2">
+                                                    <path d="M240-100q-41.92 0-70.96-29.04Q140-158.08 140-199.82V-300h120v-552.31l55.39 47.7 56.15-47.7 56.15 47.7 56.16-47.7 56.15 47.7 56.15-47.7 56.16 47.7 56.15-47.7 56.15 47.7 55.39-47.7V-200q0 41.92-29.04 70.96Q761.92-100 720-100H240Zm480-60q17 0 28.5-11.5T760-200v-560H320v460h360v100q0 17 11.5 28.5T720-160ZM367.69-610v-60h226.92v60H367.69Zm0 120v-60h226.92v60H367.69Zm310-114.62q-14.69 0-25.04-10.34-10.34-10.35-10.34-25.04t10.34-25.04q10.35-10.34 25.04-10.34t25.04 10.34q10.35 10.35 10.35 25.04t-10.35 25.04q-10.35 10.34-25.04 10.34Zm0 120q-14.69 0-25.04-10.34-10.34-10.35-10.34-25.04t10.34-25.04q10.35-10.34 25.04-10.34t25.04 10.34q10.35 10.35 10.35 25.04t-10.35 25.04q-10.35 10.34-25.04 10.34ZM240-160h380v-80H200v40q0 17 11.5 28.5T240-160Zm-40 0v-80 80Z"/>
+                                                </svg>
+                                                Cost Overview
+                                            </a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="currentColor" class="dropdown-icon text-danger me-2">
+                                                    <path d="M200-200h56l345-345-56-56-345 345v56Zm572-403L602-771l56-56q23-23 56.5-23t56.5 23l56 56q23 23 24 55.5T829-660l-57 57Zm-58 59L290-120H120v-170l424-424 170 170Zm-141-29-28-28 56 56-28-28Z"/>
+                                                </svg>
+                                                Update
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>        
+    </div>
+</div>
+{% endblock content %}
+
+<!-- {% block scripts %}
+<script src="{% static 'js/jsbarcode.all.min.js' %}"></script>
+<script>
+    JsBarcode("#barcode", "{{ item.barcode }}", {
+        format: "CODE128",
+        // lineColor: "#0aa",
+        // width: 4,
+        height: 35,
+        // displayValue: false
+    });
+</script>
+{% endblock scripts %} -->

@@ -1,0 +1,266 @@
+{% extends '_base.html' %}
+{% load static %}
+{% load templatehelpers %}
+{% block title %}Booking Information{% endblock %}
+{% block content %}
+{% load crispy_forms_tags %}
+{% include 'equipment/partials/filter-bookings-sidebar.html' %}
+
+<div class="container-fluid px-1 px-lg-3 my-5">
+    <!-- Breadcrumb & Header -->
+    <nav class="row">
+        <div id="page-topnav" class="col">
+            <h2>Equipment</h2>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'equipment_booking_query' %}">Booking Query</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Booking Information</li>
+            </ol>
+        </div>
+    </nav>    
+    <!-- Header -->
+    <div class="row" id="header-block">
+        <div class="col-xl-3">
+            <div class="page-header">
+                <h1>{{ booking.job_reference }}</h1>
+                <h6 class="text-small fw-bold mt-2">Overview</h6>
+            </div>
+        </div>
+        <!-- Search & Buttons -->
+        <div class="col-xl-9">
+            <div class="header-controls">
+                <!-- Actions Menu -->
+                <button class="btn btn-primary btn-lg-fw dropdown-toggle" id="ActionsDropdownMenuButton" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Actions
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="ActionsDropdownMenuButton">
+                    <a class="dropdown-item" href="">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="currentColor" class="dropdown-icon text-danger me-2">
+                            <path d="M200-200h56l345-345-56-56-345 345v56Zm572-403L602-771l56-56q23-23 56.5-23t56.5 23l56 56q23 23 24 55.5T829-660l-57 57Zm-58 59L290-120H120v-170l424-424 170 170Zm-141-29-28-28 56 56-28-28Z"/>
+                        </svg>
+                        Update
+                    </a>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Nav Pills -->
+    <div class="row mb-5">
+        <div class="col">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'equipment_booking_detail' booking.pk %}">
+                        Information
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'equipment_booking_cost' booking.pk %}">
+                        Cost Overview
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'equipment_booking_invoice' booking.pk %}" target="_blank">
+                        Invoice
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>    
+
+    <!-- Overview / Production -->
+    <div class="row">
+        <div class="col-lg-6 mb-4">
+            <div class="base-card p-5 h-100">
+                <div class="card-header"> 
+                    <p class="content-card-header">Overview</p>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="w-25"></th>
+                                <th class="w-75"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="ps-1 fw-bold">Booking ID</td>
+                                <td class="ps-3">{{ booking.id }}</td>
+                            </tr>                        
+                            <tr>
+                                <td class="ps-1 fw-bold">Created</td>
+                                <td class="ps-3">{{ booking.created_at }}</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-1 fw-bold">Updated</td>
+                                <td class="ps-3">{{ booking.updated_at }}</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-1 fw-bold">Created By</td>
+                                <td class="ps-3">{{ booking.created_by }}</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-1 fw-bold">Updated By</td>
+                                <td class="ps-3">{{ booking.updated_by|default_if_none:"n/a" }}</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-1 fw-bold">Department</td>
+                                <td class="ps-3">{{ booking.department|default_if_none:"n/a" }}</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-1 fw-bold">Status</td>
+                                <td class="ps-3">
+                                    {% if booking.status == 'CANCELLED' %}
+                                    <span class="text-danger">Cancelled</span>
+                                    {% else %}
+                                    {{ booking.get_status_display }}
+                                    {% endif %}
+                                </td>
+                            </tr>                                                              
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 mb-4">
+            <div class="base-card p-5 h-100">
+                <div class="card-header"> 
+                    <p class="content-card-header">Logistics</p>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="w-25"></th>
+                                <th class="w-75"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="ps-1 fw-bold">Job Reference</td>
+                                <td class="ps-3">{{ booking.job_reference }}</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-1 fw-bold">Job Number</td>
+                                <td class="ps-3">{{ booking.job_number|default_if_none:"n/a" }}</td>
+                            </tr>                        
+                            <tr>
+                                <td class="ps-1 fw-bold">Client Type</td>
+                                <td class="ps-3">{{ booking.get_client_type_display|default_if_none:"n/a" }}</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-1 fw-bold">Fascia</td>
+                                <td class="ps-3">{{ booking.fascia|default_if_none:"n/a" }}</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-1 fw-bold">Booking Start</td>
+                                <td class="ps-3">{{ booking.start_at|date:"d M Y, H:i" }}</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-1 fw-bold">Booking End</td>
+                                <td class="ps-3">{{ booking.end_at|date:"d M Y, H:i" }}</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-1 fw-bold">Duration</td>
+                                <td class="ps-3">{{ booking.duration }}</td>
+                            </tr>                   
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <div class="base-card mb-5">
+                <div class="card-header">
+                    <div>
+                        <p class="content-card-header">Booked Items</p>                
+                    </div>
+                </div>
+                <div class="card-body">
+                    <!-- No Results -->
+                    {% if booking_items|length == 0 %}
+                    <div class="table-no-results">
+                        No Items
+                    </div>
+                    {% else %}
+                    <div class="table-responsive" id="items">
+                        <table class="table align-middle text-center no-break">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <!-- Blank -->
+                                    </th>
+                                    <th>
+                                        <button class="listjs-sorter" data-sort="sort-category" type="button">
+                                            Category
+                                        </button>
+                                    </th>
+                                    <th>
+                                        <button class="listjs-sorter" data-sort="sort-manufacturer" type="button">
+                                            Manufacturer
+                                        </button>
+                                    </th>
+                                    <th>
+                                        <button class="listjs-sorter" data-sort="sort-name" type="button">
+                                            Name
+                                        </button>
+                                    </th>
+                                    <th>
+                                        <button class="listjs-sorter" data-sort="sort-serial" type="button">
+                                            Serial Number
+                                        </button>
+                                    </th>
+                                    <th>
+                                        <!-- Blank -->
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="list">
+                                {% for booking_item in booking_items %}
+                                <tr id="item-{{ booking_item.id }}">
+                                    <td class="sort-count">
+                                        {{ forloop.counter }}
+                                    </td>
+                                    <td class="sort-category">
+                                        {{ booking_item.item.category }}
+                                    </td>                                                                 
+                                    <td class="sort-manufacturer">
+                                        {{ booking_item.item.manufacturer }}
+                                    </td>
+                                    <td class="sort-name">
+                                        {{ booking_item.item.name }} {{ booking_item.item.mount|default_if_none:"" }}
+                                    </td>
+                                    <td class="sort-serial">
+                                        {{ booking_item.item.serial_number|default_if_none:"n/a" }}
+                                    </td>                                                    
+                                    <td class="kebab-menu">
+                                        <a href="#" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+                                                <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                                            </svg>
+                                        </a>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="{% url 'equipment_item_detail' booking_item.item.pk %}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="currentColor" class="dropdown-icon me-2">
+                                                    <path d="M453-280h60v-240h-60v240Zm26.982-314q14.018 0 23.518-9.2T513-626q0-14.45-9.482-24.225-9.483-9.775-23.5-9.775-14.018 0-23.518 9.775T447-626q0 13.6 9.482 22.8 9.483 9.2 23.5 9.2Zm.284 514q-82.734 0-155.5-31.5t-127.266-86q-54.5-54.5-86-127.341Q80-397.681 80-480.5q0-82.819 31.5-155.659Q143-709 197.5-763t127.341-85.5Q397.681-880 480.5-880q82.819 0 155.659 31.5Q709-817 763-763t85.5 127Q880-563 880-480.266q0 82.734-31.5 155.5T763-197.684q-54 54.316-127 86Q563-80 480.266-80Zm.234-60Q622-140 721-239.5t99-241Q820-622 721.188-721 622.375-820 480-820q-141 0-240.5 98.812Q140-622.375 140-480q0 141 99.5 240.5t241 99.5Zm-.5-340Z"/>
+                                                </svg>
+                                                Item Information
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

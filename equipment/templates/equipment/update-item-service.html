@@ -1,0 +1,63 @@
+{% extends '_base.html' %}
+{% load static %}
+{% block title %}Equipment Update Service Date{% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="container-fluid px-1 px-lg-3 my-5">
+    <!-- Breadcrumb & Header -->
+    <nav class="row">
+        <div id="page-topnav" class="col">
+            <h2>Equipment</h2>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'equipment_dashboard' %}">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Update Service Date</li>
+            </ol>
+        </div>
+    </nav>    
+    <!-- Header -->
+    <div class="row" id="header-block">
+        <div class="col-xl-3">
+            <div class="page-header">
+                <h1>Update Service Date</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8 mw-1000 mx-auto">
+        <div class="base-card mb-5">
+            <div class="card-header"> 
+                <p class="content-card-header">Update Service Date: <span class="text-accented">{{ item.name }}</span></p>
+            </div>
+            <div class="card-body">
+
+                <form method="post" id="update-item-form">
+                    {% csrf_token %}
+
+                    {% if form.non_field_errors %}
+                    <div class="form-group mb-5">
+                        {{ form.non_field_errors }}
+                    </div>
+                    {% endif %}
+
+                    <div class="form-group mb-5">
+                        {{ form.last_service_date|as_crispy_field }}
+                    </div>
+                    <hr>
+
+                    <div class="form-group text-center mt-5">
+                        <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-secondary btn-lg-fw">
+                            Back
+                        </a>
+                        <button type="submit" class="btn btn-primary btn-lg-fw" id="update-item-btn" onclick="buttonSpinner('update-item-form', 'update-item-btn')">
+                            Update
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

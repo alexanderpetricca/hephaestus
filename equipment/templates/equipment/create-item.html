@@ -1,0 +1,94 @@
+{% extends '_base.html' %}
+{% load static %}
+{% block title %}Equipment Create Item{% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="container-fluid px-1 px-lg-3 my-5">
+    <!-- Breadcrumb & Header -->
+    <nav class="row">
+        <div id="page-topnav" class="col">
+            <h2>Equipment</h2>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'equipment_dashboard' %}">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Create Item</li>
+            </ol>
+        </div>
+    </nav>    
+    <!-- Header -->
+    <div class="row" id="header-block">
+        <div class="col-xl-3">
+            <div class="page-header">
+                <h1>Create Item</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8 mw-1000 mx-auto">
+            <div class="base-card mb-5">
+                <div class="card-header"> 
+                    <p class="content-card-header">Create Item</span></p>
+                </div>
+                <div class="card-body">
+
+                    <form method="post" id="create-item-form">
+                        {% csrf_token %}
+
+                        {% if form.non_field_errors %}
+                        <div class="form-group mb-5">
+                            {{ form.non_field_errors }}
+                        </div>
+                        {% endif %}
+
+                        <div class="form-group mb-5">
+                            <h5 class="my-4">Base Information</h5>
+                            {{ form.category|as_crispy_field }}
+                            {{ form.manufacturer|as_crispy_field }}
+                            {{ form.name|as_crispy_field }}
+                            {{ form.mount|as_crispy_field }}
+                            {{ form.model_number|as_crispy_field }}
+                            {{ form.serial_number|as_crispy_field }}
+                            {{ form.barcode|as_crispy_field }}
+                        </div>
+                        <hr>
+                        
+                        <div class="form-group mb-5">
+                            <h5 class="my-4">Notes</h5>
+                            {{ form.notes|as_crispy_field }}
+                        </div>
+                        <hr>
+
+                        <div class="form-group mb-5">
+                            <h5 class="my-4">Purchase and Costs</h5>
+                            {{ form.purchase_date|as_crispy_field }}
+                            {{ form.purchase_cost|as_crispy_field }}
+                            {{ form.depreciation_method|as_crispy_field }}
+                            <div class="mt-5">
+                                {{ form.hire_day_rate|as_crispy_field }}
+                            </div>
+                        </div>
+                        <hr>
+
+                        <div class="form-group mb-5">
+                            <h5 class="my-4">Servicing & Maintainence</h5>
+                            {{ form.last_service_date|as_crispy_field }}
+                            {{ form.service_interval_period|as_crispy_field }}
+                        </div>
+                        <hr>
+
+                        <div class="form-group text-center mt-5">
+                            <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-secondary btn-lg-fw">
+                                Back
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-lg-fw" id="create-item-btn" onclick="buttonSpinner('create-item-form', 'create-item-btn')">
+                                Create
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

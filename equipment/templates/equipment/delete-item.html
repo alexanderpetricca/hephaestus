@@ -1,0 +1,63 @@
+{% extends '_base.html' %}
+{% load static %}
+{% block title %}Equipment Delete Item{% endblock %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container-fluid px-1 px-lg-3 my-5">
+    <!-- Breadcrumb & Header -->
+    <nav class="row">
+        <div id="page-topnav" class="col">
+            <h2>Social</h2>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'equipment_dashboard' %}">Dashboard</a></li>                
+                <li class="breadcrumb-item active" aria-current="page">Delete Item</li>
+            </ol>
+        </div>
+    </nav>      
+    <!-- Header -->
+    <div class="row" id="header-block">
+        <div class="col">
+            <div class="page-header">
+                <h1>Confirm Deletion</h1>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-8 mw-1000 mx-auto">
+            <div class="base-card mb-5">
+                <div class="card-header"> 
+                    <p class="content-card-header">Confirm Deletion: <span class="text-accented">{{ item.name }}</span></p>
+                </div>
+                <div class="card-body">
+
+                    <form method="post" id="delete-item-form">
+                        {% csrf_token %}
+
+                        <div class="form-group mb-5">
+                            <p>
+                                Are you sure you wish to delete <span class="text-accented">{{ item.name }} / SN: {{ item.serial_number|default_if_none:"No Serial" }}</span> ? 
+                            </p>
+                            <p>
+                                This will immediately <strong>delete this item, preventing it from being booked for jobs.</strong> 
+                                Existing and past bookings are not affected.
+                            </p>
+                            <p>This action is <strong>irreversible</strong>, and is logged.</p>
+                        </div>
+
+                        <div class="form-group text-center mt-5">
+                            <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-secondary btn-lg-fw">
+                                Back
+                            </a>
+                            <button type="submit" class="btn btn-danger btn-lg-fw" id="confirm-delete-btn" onclick="buttonSpinner('delete-item-form', 'confirm-delete-btn')">
+                                Delete
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

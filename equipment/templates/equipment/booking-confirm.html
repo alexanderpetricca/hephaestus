@@ -1,0 +1,58 @@
+{% extends '_base.html' %}
+{% load static %}
+{% block title %}Confirm Booking{% endblock %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container-fluid px-1 px-lg-3 my-5">
+    <!-- Breadcrumb & Header -->
+    <nav class="row">
+        <div id="page-topnav" class="col">
+            <h2>Social</h2>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'equipment_booking_summary' %}">Booking Summary</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Confirm Booking</li>
+            </ol>
+        </div>
+    </nav>      
+    <!-- Header -->
+    <div class="row" id="header-block">
+        <div class="col">
+            <div class="page-header">
+                <h1>Confirm Booking</h1>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-8 mw-1000 mx-auto">
+            <div class="base-card mb-5">
+                <div class="card-header"> 
+                    <p class="content-card-header">Confirm Booking: <span class="text-accented">{{ pending_booking.job_reference }}</span></p>
+                </div>
+                <div class="card-body">
+
+                    <form method="post" id="confirm-booking-form">
+                        {% csrf_token %}
+                        <div class="form-group mb-5">
+                            <p>
+                                Are you sure you wish to confirm <span class="text-accented">{{ pending_booking.job_reference  }}</span> ? 
+                            </p>
+                            <p>
+                                This will immediately <strong>confirm this booking and add it to the calendar.</strong> 
+                            </p>
+                        </div>
+                        <div class="form-group text-center mt-5">
+                            <a href="{% url 'equipment_booking_summary' %}" class="btn btn-secondary btn-lg-fw">
+                                Back
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-lg-fw" id="confirm-booking-btn" onclick="buttonSpinner('confirm-booking-form', 'confirm-booking-btn')">
+                                Confirm
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,26 @@
+{% extends '_external_base.html' %}
+{% load static %}
+{% block title %}Login{% endblock title %}
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    <div>
+        {% if form.non_field_errors %}
+        {{ form.non_field_errors }}
+        {% endif %}
+        
+        {{ form.login }}
+        {{ form.login.errors }}
+        {{ form.password }}
+        {{ form.password.errors }}
+    </div>
+    <div>
+        <button type="submit">
+            Login
+        </button>
+        <a href="{% url 'account_reset_password' %}">
+            Forgotten Password
+        </a>
+    </div>
+</form>
+{% endblock content %}

@@ -1,0 +1,43 @@
+# Python
+*.pyc
+*~
+__pycache__
+
+# Env
+.env
+myvenv/
+venv/
+.venv/
+
+# Database
+db.sqlite3
+dump.rdb
+
+# macOS
+._*
+.DS_Store
+.fseventsd
+.Spotlight-V100
+
+# Windows
+Thumbs.db*
+ehthumbs*.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
+
+# Visual Studio
+.vscode/
+.history/
+*.code-workspace
+
+# Media
+media/
+
+# Temp Files
+tmp/
+temp/
+
+# Other
+export/
+export.csv
+output.csv

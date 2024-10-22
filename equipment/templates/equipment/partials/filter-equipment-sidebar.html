@@ -1,0 +1,65 @@
+<!-- Filter Sidebar -->
+<form action="{% url 'equipment_item_query' %}" method="get">
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="filter-equipment-sidebar">
+        <div class="offcanvas-header">
+            <h3 class="offcanvas-title">Filter Equipment</h3>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+
+            <div class="mb-5">
+                <h5 class="mb-3">Search</h5>
+                <div class="input-group">
+                    <input type="search" placeholder="Search Items" class="form-control" type="text" id="sidebarSearch" name="search">
+                </div>
+            </div>
+            <hr>
+
+            <div class="mb-5">
+                <h5 class="mb-3">Department</h5>
+                {% for department in departments %}
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="checkbox-{{ department.id }}" name="department" value="{{ department.id }}">
+                    <label for="checkbox-{{ department.id }}" class="form-check-label">{{ department.name }}</label>
+                </div>
+                {% endfor %}
+            </div>
+            <hr>
+
+            <div class="my-5">
+                <h5 class="mb-3">Category</h5>
+                <div class="mb-5">
+                    <select name="category" class="form-select" id="item-category-select">
+                        <option value="" selected>Select option...</option>
+                        {% for category in categories %}
+                        <option value="{{ category.id }}">{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <hr>
+
+            <div class="my-5">
+                <h5 class="mb-3">Manufacturer</h5>
+                <div class="mb-5">
+                    <select name="manufacturer" class="form-select" id="item-manufacturer-select">
+                        <option value="" selected>Select option...</option>
+                        {% for manufacturer in manufacturers %}
+                        <option value="{{ manufacturer.id }}">{{ manufacturer.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <hr>
+        </div>
+        <div class="offcanvas-footer text-center p-4">
+            <a href="{% url 'equipment_item_query' %}" class="btn btn-secondary">
+                Clear
+            </a>
+            <button type="submit" class="btn btn-primary">
+                Filter
+            </button>
+        </div>
+    </div>
+</form>
+<!-- Filter Sidebar End -->
