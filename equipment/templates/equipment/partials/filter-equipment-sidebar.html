@@ -1,12 +1,11 @@
 <!-- Filter Sidebar -->
 <form action="{% url 'equipment_item_query' %}" method="get">
     <div class="offcanvas offcanvas-end" tabindex="-1" id="filter-equipment-sidebar">
-        <div class="offcanvas-header">
-            <h3 class="offcanvas-title">Filter Equipment</h3>
+        <div class="offcanvas-header mb-4">
+            <h2 class="fs-5 m-0">Filter Items</h2>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
-
             <div class="mb-5">
                 <h5 class="mb-3">Search</h5>
                 <div class="input-group">
@@ -14,18 +13,6 @@
                 </div>
             </div>
             <hr>
-
-            <div class="mb-5">
-                <h5 class="mb-3">Department</h5>
-                {% for department in departments %}
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="checkbox-{{ department.id }}" name="department" value="{{ department.id }}">
-                    <label for="checkbox-{{ department.id }}" class="form-check-label">{{ department.name }}</label>
-                </div>
-                {% endfor %}
-            </div>
-            <hr>
-
             <div class="my-5">
                 <h5 class="mb-3">Category</h5>
                 <div class="mb-5">
@@ -38,7 +25,6 @@
                 </div>
             </div>
             <hr>
-
             <div class="my-5">
                 <h5 class="mb-3">Manufacturer</h5>
                 <div class="mb-5">

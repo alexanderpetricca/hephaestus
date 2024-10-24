@@ -2,163 +2,73 @@
 {% load static %}
 {% load templatehelpers %}
 {% block title %}Booking Calendar{% endblock %}
+{% block pageheader %}Booking Calendar{% endblock pageheader %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{% url 'equipment_dashboard' %}">Dashboard</a></li>
+<li class="breadcrumb-item active" aria-current="page">Booking Calendar</li>
+{% endblock breadcrumb %}
 {% block content %}
 {% load crispy_forms_tags %}
 {% include 'equipment/partials/filter-bookings-sidebar.html' %}
 
-<div class="container-fluid px-1 px-lg-3 my-5">
-    <!-- Breadcrumb & Header -->
-    <nav class="row">
-        <div id="page-topnav" class="col">
-            <h2>Equipment</h2>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'equipment_dashboard' %}">Dashboard</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Booking Calendar</li>
-            </ol>
-        </div>
-    </nav>    
-    <!-- Header -->
-    <div class="row" id="header-block">
-        <div class="col-xl-3">
-            <div class="page-header">
-                <h1>Calendar</h1>
+<div class="row mt-5">
+    <div class="col mb-4">
+        <div class="card h-100">
+            <div class="card-header d-flex flex-column flex-lg-row justify-content-between align-items-lg-center mb-5">
+                <h2 class="fs-5 m-0 py-4">
+                    {{ month_name }} {{ year_name }}
+                </h2>
+                <div class="btn-group mb-4 mb-lg-0" role="group" aria-label="Basic example">
+                    <a href="{% url 'equipment_booking_calendar' %}?period={{ prev_month_start }}" type="button" class="btn btn-primary">Prev</a>
+                    <a href="{% url 'equipment_booking_calendar' %}" type="button" class="btn btn-primary">Today</a>
+                    <a href="{% url 'equipment_booking_calendar' %}?period={{ next_month_start }}" type="button" class="btn btn-primary">Next</a>
+                </div>                 
             </div>
-        </div>
-        <!-- Search & Buttons -->
-        <div class="col-xl-9">
-            <form action="{% url 'equipment_booking_query' %}" method="get" class="header-controls">
-                <input type="search" placeholder="Search Bookings" class="form-control search-bar" type="text" name="search" value="{{ request.GET.search }}" id="search-bookings">
-                <a data-bs-toggle="offcanvas" data-bs-target="#filter-bookings-sidebar" class="btn btn-primary btn-lg-fw">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="18" height="18" fill="currentColor" class="me-2">
-                        <path d="M400-240v-80h160v80H400ZM240-440v-80h480v80H240ZM120-640v-80h720v80H120Z"/>
-                    </svg>
-                    Filter
-                </a>
-                <button class="btn btn-primary btn-lg-fw dropdown-toggle" id="ActionsDropdownMenuButton" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Actions
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="ActionsDropdownMenuButton">
-                    <a class="dropdown-item" href="{% url 'equipment_create_item' %}">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="dropdown-icon me-2" fill="currentColor">
-                            <path d="M450-200v-250H200v-60h250v-250h60v250h250v60H510v250h-60Z"/>
-                        </svg>
-                        New Item
-                    </a>
-                    <a class="dropdown-item" href="{% url 'equipment_booking_summary' %}">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="dropdown-icon me-2" fill="currentColor">
-                            <path d="M450-200v-250H200v-60h250v-250h60v250h250v60H510v250h-60Z"/>
-                        </svg>
-                        New Booking
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="{% url 'equipment_booking_query' %}?date_range_start={{ today }}&date_range_end={{ today }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="dropdown-icon me-2" fill="currentColor">
-                            <path d="M360-300q-42 0-71-29t-29-71q0-42 29-71t71-29q42 0 71 29t29 71q0 42-29 71t-71 29ZM200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Z"/>
-                        </svg>
-                        Today's Bookings
-                    </a>
-                    <a class="dropdown-item" href="{% url 'equipment_booking_query' %}?date_range_start={{ week_start }}&date_range_end={{ week_end }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="dropdown-icon me-2" fill="currentColor">
-                            <path d="M320-400q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm160 0q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm160 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Z"/>
-                        </svg>
-                        This Week's Bookings
-                    </a>
-                    <a class="dropdown-item" href="{% url 'equipment_booking_query' %}?date_range_start={{ month_start }}&date_range_end={{ month_end }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="dropdown-icon me-2" fill="currentColor">
-                            <path d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z"/>
-                        </svg>
-                        This Month's Bookings
-                    </a>
-                </ul>
-            </form>
-        </div>
-    </div>
-
-    <!-- Nav Pills -->
-    <div class="row mb-5">
-        <div class="col">
-            <ul class="nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'equipment_dashboard' %}">
-                        Dashboard
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'equipment_item_query' %}">
-                        Equipment
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="{% url 'equipment_booking_calendar' %}">
-                        Calendar
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'equipment_booking_query' %}">
-                        Bookings
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link position-relative" href="{% url 'equipment_booking_summary' %}">
-                        {% if pending_booking %}
-                        Pending Booking
-                        <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-dark rounded-circle">
-                            <span class="visually-hidden">Active Booking</span>
-                        </span>
-                        {% else %}
-                        New Booking
-                        {% endif %}
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="row mb-5">
-        <div class="col">
-            <div class="base-card h-100">
-                <div class="card-header"> 
-                    <p class="content-card-header">{{ month_name }} {{ year_name }}</p>   
-                    <div class="header-controls">
-                        <a href="{% url 'equipment_booking_calendar' %}?period={{ prev_month_start }}" class="btn btn-primary btn-narrow">
-                            Prev
-                        </a>
-                        <!-- This Week -->
-                        <a href="{% url 'equipment_booking_calendar' %}" class="btn btn-primary btn-narrow">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="button-icon me-2">
-                                <path d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Z"/>
-                            </svg>
-                            Today
-                        </a>
-                        <a href="{% url 'equipment_booking_calendar' %}?period={{ next_month_start }}" class="btn btn-primary btn-narrow">
-                            Next
-                        </a>
-                    </div>                  
+            <div class="card-body">
+                <div class="row row-cols-lg-7 g-2 mb-2">
+                    <div class="col text-center">Mon</div>
+                    <div class="col text-center">Tue</div>
+                    <div class="col text-center">Wed</div>
+                    <div class="col text-center">Thur</div>
+                    <div class="col text-center">Fri</div>
+                    <div class="col text-center">Sat</div>
+                    <div class="col text-center">Sun</div>
                 </div>
-
-                <div class="card-body">
-                    {% for week_key, days in month_obj.items %}
-                    <div class="row row-cols-7 month-calendar">
-                        {% for day_num, day_data in days.items %}
-                            {% if day_data.day != 0 %}
-                                <a href="{% url 'equipment_booking_query' %}?date_range_start={{ day_data.date }}&date_range_end={{ day_data.date }}" class="col calendar-cell {% if day_data.is_today %}today{% endif %}">
-                                    <div class="cell-head">
-                                        {{ day_data.day }}
-                                    </div>
-                                    <div class="cell-body">
-                                        {% if day_data.has_booking %}
-                                        <div class="calendar-event"></div>
-                                        {% endif %}
-                                    </div>
-                                </a>
-                            {% else %}
-                                <!-- Render empty cells for padding days (0) -->
-                                <div class="col calendar-cell opacity-25"></div>
-                            {% endif %}
-                        {% endfor %}
+                {% for week_key, days in month_obj.items %}
+                <div class="row row-cols-lg-7 g-2 mb-2">
+                    {% for day_num, day_data in days.items %}
+                    {% if day_data.day != 0 %}
+                    <div class="col" style="height: 150px;">
+                        <a href="{% url 'equipment_booking_query' %}?date_range_start={{ day_data.date }}&date_range_end={{ day_data.date }}" class="text-reset">
+                            <div class="bg-body-secondary rounded h-100 py-2 px-3 {% if day_data.is_today %}border border-primary{% endif %}">
+                                <div class="mt-3 text-end">
+                                    {{ day_data.day }}
+                                </div>
+                                <div class="py-3">
+                                    {% if day_data.has_booking %}
+                                    <div class="bg-primary rounded" style="height: 15px;"></div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </a>
                     </div>
-                {% endfor %}                    
+                    {% else %}
+                    <!-- Render empty cells for padding days (0) -->
+                    <div class="col" style="height: 150px;">
+                        <div class="bg-body-secondary rounded h-100 py-2 px-3 opacity-25 {% if day_data.is_today %}border border-primary{% endif %}">
+                            <div class="mt-3 text-end">
+                            </div>
+                            <div class="py-3">
+                                {% if day_data.has_booking %}
+                                <div class="badge py-2"></div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
                 </div>
+                {% endfor %}                    
             </div>
         </div>
     </div>

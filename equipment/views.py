@@ -52,6 +52,7 @@ def equipment_dashboard_view(request):
         'pending_booking': has_pending_booking(request.user),
         'todays_bookings': todays_bookings,
         'recent_bookings': recent_bookings,
+        'module': 'dashboard',
     }
     context.update(get_cached_equipment_filterables())
     context.update(get_date_periods())
@@ -122,6 +123,7 @@ def item_query_view(request):
     context = {
         'item_query': item_query,
         'pending_booking': pending_booking,
+        'module': 'equipment',
     }
     context.update(get_cached_equipment_filterables())
     context.update(get_date_periods())
@@ -156,6 +158,7 @@ def item_detail_view(request, pk):
     context = {
         'item': item,
         'upcoming_bookings': upcoming_bookings,
+        'module': 'equipment',
     }
 
     return render(request, 'equipment/item-detail.html', context)
@@ -184,6 +187,7 @@ def create_item_view(request):
 
     context = {
         'form': form,
+        'module': 'equipment',
     }
     return render(request, 'equipment/create-item.html', context)
 
@@ -214,6 +218,7 @@ def update_item_view(request, pk):
     context = {
         'form': form,
         'item': item,
+        'module': 'equipment',
     }
     return render(request, 'equipment/update-item.html', context)
 
@@ -234,6 +239,7 @@ def delete_item_view(request, pk):
 
     context = {
         'item': item,
+        'module': 'equipment',
     }
     return render(request, 'equipment/delete-item.html', context)
 
@@ -441,7 +447,8 @@ def booking_summary_view(request):
     context = {
         'pending_booking': pending_booking,
         'booking_items': booking_items,
-        'form': form
+        'form': form,
+        'module': 'summary',
     }
     context.update(get_cached_equipment_filterables())
     context.update(get_date_periods())
@@ -618,6 +625,7 @@ def booking_query_view(request):
     context = {
         'booking_query': booking_query,
         'pending_booking': pending_booking,
+        'module': 'bookings',
     }
     context.update(get_date_periods())
     context.update(get_cached_equipment_filterables())
@@ -689,6 +697,7 @@ def booking_calendar_view(request):
         'current_month_start': current_date.strftime('%Y-%m-%d'),
         'next_month_start': next_month,
         'prev_month_start': prev_month,
+        'module': 'calendar',
     }
 
     return render(request, 'equipment/booking-calendar.html', context)

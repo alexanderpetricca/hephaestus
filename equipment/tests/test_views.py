@@ -274,7 +274,7 @@ class EquipmentModelsTest(TestCase):
         response = self.client.get(reverse('equipment_create_item'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'equipment/create-item.html')
-        self.assertContains(response, 'Equipment Create Item | Hephaestus')
+        self.assertContains(response, 'Create Item | Hephaestus')
         
         # POST
         data = {
@@ -339,7 +339,7 @@ class EquipmentModelsTest(TestCase):
         response = self.client.get(reverse('equipment_update_item', kwargs={'pk': self.item.pk}))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'equipment/update-item.html')
-        self.assertContains(response, 'Equipment Update Item | Hephaestus')
+        self.assertContains(response, 'Update Item | Hephaestus')
 
         # POST
         data = {
@@ -459,7 +459,7 @@ class EquipmentModelsTest(TestCase):
         response = self.client.get(reverse('equipment_delete_item', kwargs={'pk': str(self.item.id)}))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'equipment/delete-item.html')
-        self.assertContains(response, 'Equipment Delete Item | Hephaestus')
+        self.assertContains(response, 'Delete Item | Hephaestus')
 
         # POST
         response = self.client.post(reverse('equipment_delete_item', kwargs={'pk': str(self.item.id)}))
@@ -518,7 +518,7 @@ class EquipmentModelsTest(TestCase):
         response = self.client.get(reverse('equipment_booking_summary'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'equipment/booking-summary.html')
-        self.assertContains(response, 'Booking Summary | Hephaestus')
+        self.assertContains(response, 'New Booking | Hephaestus')
         
         # Test new booking form rendered if no pending booking
         self.assertContains(response, 'New Booking')

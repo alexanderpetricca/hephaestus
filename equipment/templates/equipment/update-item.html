@@ -1,38 +1,22 @@
 {% extends '_base.html' %}
 {% load static %}
-{% block title %}Equipment Update Item{% endblock %}
+{% block title %}Update Item{% endblock %}
+{% block pageheader %}Update Item{% endblock pageheader %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{% url 'equipment_dashboard' %}">Dashboard</a></li>
+<li class="breadcrumb-item active" aria-current="page">Update Item</li>
+{% endblock breadcrumb %}
 {% load crispy_forms_tags %}
 {% block content %}
-
-<div class="container-fluid px-1 px-lg-3 my-5">
-    <!-- Breadcrumb & Header -->
-    <nav class="row">
-        <div id="page-topnav" class="col">
-            <h2>Equipment</h2>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'equipment_dashboard' %}">Dashboard</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Update Item</li>
-            </ol>
-        </div>
-    </nav>    
-    <!-- Header -->
-    <div class="row" id="header-block">
-        <div class="col-xl-3">
-            <div class="page-header">
-                <h1>Update Item</h1>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-lg-8 mw-1000 mx-auto">
-        <div class="base-card mb-5">
-            <div class="card-header"> 
-                <p class="content-card-header">Update Item: <span class="text-accented">{{ item.name }}</span></p>
+<div class="row mt-5">
+    <div class="col-lg-6 mx-auto">
+        <div class="card">
+            <div class="card-header d-flex flex-column flex-lg-row justify-content-between align-items-center mb-5">
+                <h2 class="fs-5 m-0 py-4">
+                    Update Item
+                </h2>
             </div>
             <div class="card-body">
-
                 <form method="post" id="update-item-form">
                     {% csrf_token %}
 
@@ -53,7 +37,7 @@
                         {{ form.barcode|as_crispy_field }}
                     </div>
                     <hr>
-                    
+
                     <div class="form-group mb-5">
                         <h5 class="my-4">Notes</h5>
                         {{ form.notes|as_crispy_field }}
@@ -76,14 +60,13 @@
                         {{ form.last_service_date|as_crispy_field }}
                         {{ form.service_interval_period|as_crispy_field }}
                     </div>
-                    <hr>
 
-                    <div class="form-group text-center mt-5">
-                        <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-secondary btn-lg-fw">
+                    <div class="form-group text-center my-3">
+                        <a href="{% url 'equipment_dashboard' %}" class="btn btn-secondary btn-lg-fw">
                             Back
                         </a>
                         <button type="submit" class="btn btn-primary btn-lg-fw" id="update-item-btn" onclick="buttonSpinner('update-item-form', 'update-item-btn')">
-                            Update
+                            update
                         </button>
                     </div>
                 </form>

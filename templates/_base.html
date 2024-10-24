@@ -10,8 +10,8 @@
         <!-- Custom CSS -->
         <link rel="stylesheet" href="{% static 'css/base.css' %}">
     </head>
-    <body>
-        <nav class="navbar navbar-expand-lg bg-body-tertiary mb-5 px-3">
+    <body class="d-flex flex-column vh-100">
+        <nav class="navbar navbar-expand-lg bg-body-tertiary mb-5">
             <div class="container-fluid">
                 <a class="navbar-brand me-lg-5" href="{% url 'equipment_dashboard' %}">
                     Hephaestus
@@ -21,31 +21,50 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <form action="{% url 'equipment_booking_query' %}" method="get" class="d-flex mt-3 mt-lg-0" role="search">
+                            <input id="search-bookings" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search">
+                        </form>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Profile
+                            <button id="ActionsDropdownMenuButton" class="btn btn-primary dropdown-toggle mt-2 mt-lg-0"  type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Actions
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="ActionsDropdownMenuButton">
+                                <a class="dropdown-item" href="{% url 'equipment_create_item' %}">
+                                    Add Item
+                                </a>
+                                <a class="dropdown-item" href="{% url 'equipment_booking_summary' %}">
+                                    Add Booking
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{% url 'equipment_booking_query' %}?date_range_start={{ today }}&date_range_end={{ today }}">
+                                    View Today's Bookings
+                                </a>
+                                <a class="dropdown-item" href="{% url 'equipment_booking_query' %}?date_range_start={{ week_start }}&date_range_end={{ week_end }}">
+                                    View This Week's Bookings
+                                </a>
+                                <a class="dropdown-item" href="{% url 'equipment_booking_query' %}?date_range_start={{ month_start }}&date_range_end={{ month_end }}">
+                                    View This Month's Bookings
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{% url 'account_change_password' %}">
+                                    Change Password
+                                </a>
+                                <a class="dropdown-item" href="{% url 'account_logout' %}">
+                                    Logout
+                                </a>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-secondary my-2 my-lg-0 ms-lg-2" data-bs-toggle="offcanvas" data-bs-target="#filter-bookings-sidebar">
+                                Filter
                             </a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a class="dropdown-item" href="#">Action</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#">Another action</a>
-                                </li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#">Something else here</a>
-                                </li>
-                            </ul>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
         {% include 'equipment/partials/filter-bookings-sidebar.html' %}
-        <div class="container-fluid px-lg-5">
+        <div class="container-fluid mb-5">
             <!-- Breadcrumb -->
             <nav class="row">
                 <div class="col">
@@ -56,63 +75,65 @@
                 </div>
             </nav>    
             <!-- Header -->
-            <div class="row" id="header-block">
-                <div class="col-xl-3">
+            <div class="row mb-5">
+                <div class="col-xl-6">
                     <div class="page-header">
-                        <h1>{% block pageheader %}{% endblock pageheader %}</h1>
+                        <h1 class="fs-3">{% block pageheader %}{% endblock pageheader %}</h1>
                     </div>
-                </div>
-                <!-- Search & Buttons -->
-                <div class="col-xl-9">
-                    <form action="{% url 'equipment_booking_query' %}" method="get" class="d-flex">
-                        <input type="search" placeholder="Search Bookings" class="form-control search-bar" type="text" name="search" value="{{ request.GET.search }}" id="search-bookings">
-                        <a data-bs-toggle="offcanvas" data-bs-target="#filter-bookings-sidebar" class="btn btn-primary">
-                            Filter
-                        </a>
-                        <button class="btn btn-primary dropdown-toggle" id="ActionsDropdownMenuButton" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Actions
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="ActionsDropdownMenuButton">
-                            <a class="dropdown-item" href="{% url 'equipment_create_item' %}">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="dropdown-icon me-2" fill="currentColor">
-                                    <path d="M450-200v-250H200v-60h250v-250h60v250h250v60H510v250h-60Z"/>
-                                </svg>
-                                New Item
-                            </a>
-                            <a class="dropdown-item" href="{% url 'equipment_booking_summary' %}">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="dropdown-icon me-2" fill="currentColor">
-                                    <path d="M450-200v-250H200v-60h250v-250h60v250h250v60H510v250h-60Z"/>
-                                </svg>
-                                New Booking
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="{% url 'equipment_booking_query' %}?date_range_start={{ today }}&date_range_end={{ today }}">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="dropdown-icon me-2" fill="currentColor">
-                                    <path d="M360-300q-42 0-71-29t-29-71q0-42 29-71t71-29q42 0 71 29t29 71q0 42-29 71t-71 29ZM200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Z"/>
-                                </svg>
-                                Today's Bookings
-                            </a>
-                            <a class="dropdown-item" href="{% url 'equipment_booking_query' %}?date_range_start={{ week_start }}&date_range_end={{ week_end }}">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="dropdown-icon me-2" fill="currentColor">
-                                    <path d="M320-400q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm160 0q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm160 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Z"/>
-                                </svg>
-                                This Week's Bookings
-                            </a>
-                            <a class="dropdown-item" href="{% url 'equipment_booking_query' %}?date_range_start={{ month_start }}&date_range_end={{ month_end }}">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="dropdown-icon me-2" fill="currentColor">
-                                    <path d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z"/>
-                                </svg>
-                                This Month's Bookings
-                            </a>
-                        </ul>
-                    </form>
                 </div>
             </div>
 
+            <!-- Nav Pills -->
+            <div class="row mb-5">
+                <div class="col">
+                    <ul class="nav nav-pills">
+                        <li class="nav-item">
+                            <a class="nav-link {% if module == 'dashboard' %}active{% endif %}" aria-current="page" href="{% url 'equipment_dashboard' %}">
+                                Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if module == 'equipment' %}active{% endif %}" href="{% url 'equipment_item_query' %}">
+                                Equipment
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if module == 'calendar' %}active{% endif %}" href="{% url 'equipment_booking_calendar' %}">
+                                Calendar
+                            </a>
+                        </li>               
+                        <li class="nav-item">
+                            <a class="nav-link {% if module == 'bookings' %}active{% endif %}" href="{% url 'equipment_booking_query' %}">
+                                Bookings
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if module == 'summary' %}active{% endif %} position-relative" href="{% url 'equipment_booking_summary' %}">
+                                {% if pending_booking %}
+                                Pending Booking
+                                <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-dark rounded-circle">
+                                    <span class="visually-hidden">Active Booking</span>
+                                </span>
+                                {% else %}
+                                New Booking
+                                {% endif %}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
             {% block content %}
             {% endblock content %}
         </div>
+        <footer class="footer bg-body-tertiary py-5 mt-auto" data-bs-theme="dark">
+            <div class="container-fluid text-center">
+                <span class="text-muted">Hephaestus 2024. All rights reserved.</span>
+            </div>
+        </footer>
         <!-- Bootstrap 5.3.3 JS -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        <script src="{% static 'js/app.js' %}"></script>
+        {% block scripts %}
+        {% endblock scripts %}
     </body>
 </html>

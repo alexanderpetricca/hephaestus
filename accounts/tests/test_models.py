@@ -56,5 +56,5 @@ class CustomUserModelTests(TestCase):
         Test user model string method.
         """
 
-        self.assertEqual(str(self.user), str(self.user.email))
-        self.assertEqual(str(self.admin_user), str(self.admin_user.email))
+        self.assertEqual(str(self.user), f'{self.user.first_name} {self.user.last_name}')
+        self.assertEqual(str(self.admin_user), f'{self.admin_user.first_name} {self.admin_user.last_name}')
