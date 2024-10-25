@@ -121,14 +121,14 @@ def item_query_view(request):
         item_query = paginator.page(paginator.num_pages)     
 
     context = {
-        'item_query': item_query,
         'pending_booking': pending_booking,
+        'item_query': item_query,
         'module': 'equipment',
     }
     context.update(get_cached_equipment_filterables())
     context.update(get_date_periods())
 
-    return render(request, 'equipment/item-query.html', context)
+    return render(request, 'equipment/items/item-query.html', context)
 
 
 @login_required
@@ -156,12 +156,13 @@ def item_detail_view(request, pk):
         ).order_by('start_at')
 
     context = {
+        'pending_booking': has_pending_booking(request.user),
         'item': item,
         'upcoming_bookings': upcoming_bookings,
         'module': 'equipment',
     }
 
-    return render(request, 'equipment/item-detail.html', context)
+    return render(request, 'equipment/items/item-detail.html', context)
 
 
 
@@ -186,10 +187,11 @@ def create_item_view(request):
             return redirect(reverse('equipment_dashboard'))
 
     context = {
+        'pending_booking': has_pending_booking(request.user),
         'form': form,
         'module': 'equipment',
     }
-    return render(request, 'equipment/create-item.html', context)
+    return render(request, 'equipment/items/create-item.html', context)
 
 
 @login_required
@@ -216,11 +218,12 @@ def update_item_view(request, pk):
             return redirect(next)
 
     context = {
+        'pending_booking': has_pending_booking(request.user),
         'form': form,
         'item': item,
         'module': 'equipment',
     }
-    return render(request, 'equipment/update-item.html', context)
+    return render(request, 'equipment/items/update-item.html', context)
 
 
 @login_required
@@ -238,10 +241,11 @@ def delete_item_view(request, pk):
         return redirect(next)
 
     context = {
+        'pending_booking': has_pending_booking(request.user),
         'item': item,
         'module': 'equipment',
     }
-    return render(request, 'equipment/delete-item.html', context)
+    return render(request, 'equipment/items/delete-item.html', context)
 
 
 @login_required
@@ -279,10 +283,11 @@ def assign_item_view(request, pk):
                 return redirect(next)
 
         context = {
+            'pending_booking': has_pending_booking(request.user),
             'form': form,
         }
 
-        return render(request, 'equipment/assign-item.html', context)
+        return render(request, 'equipment/items/assign-item.html', context)
 
 
 @login_required
@@ -319,11 +324,12 @@ def update_item_service_view(request, pk):
             return redirect(next)
 
     context = {
+        'pending_booking': has_pending_booking(request.user),
         'form': form,
         'item': item,
     }
 
-    return render(request, 'equipment/update-item-service.html', context)
+    return render(request, 'equipment/items/update-item-service.html', context)
 
 @login_required
 @permission_required('equipment.add_equipmentbooking', raise_exception=True)
@@ -453,7 +459,7 @@ def booking_summary_view(request):
     context.update(get_cached_equipment_filterables())
     context.update(get_date_periods())
     
-    return render(request, 'equipment/booking-summary.html', context)
+    return render(request, 'equipment/bookings/booking-summary.html', context)
 
 
 @login_required
@@ -480,7 +486,7 @@ def booking_summary_confirm_view(request):
                 'pending_booking': pending_booking,
             }
 
-            return render(request, 'equipment/booking-confirm.html', context)                           
+            return render(request, 'equipment/bookings/booking-confirm.html', context)                           
 
     except ValidationError as e:
 
@@ -516,10 +522,11 @@ def booking_summary_cancel_view(request):
         return redirect(reverse('equipment_dashboard'))
 
     context = {
+        'pending_booking': has_pending_booking(request.user),
         'booking': booking,
     }
 
-    return render(request, 'equipment/booking-cancel.html', context)
+    return render(request, 'equipment/bookings/booking-cancel.html', context)
 
 
 @login_required
@@ -569,11 +576,12 @@ def booking_update_meta_view(request, pk):
     form = forms.CreateUpdateBookingForm(instance=booking)
 
     context = {
+        'pending_booking': has_pending_booking(request.user),
         'form': form,
         'booking': booking,
     }
 
-    return render(request, 'equipment/booking-update-meta.html', context)
+    return render(request, 'equipment/bookings/booking-update-meta.html', context)
 
 
 @login_required
@@ -591,10 +599,11 @@ def booking_cancel_view(request, pk):
         return redirect(reverse('equipment_dashboard'))        
 
     context = {
+        'pending_booking': has_pending_booking(request.user),
         'booking': booking,
     }
 
-    return render(request, 'equipment/booking-cancel.html', context)
+    return render(request, 'equipment/bookings/booking-cancel.html', context)
 
 
 @login_required
@@ -623,14 +632,14 @@ def booking_query_view(request):
     pending_booking = has_pending_booking(request.user)
 
     context = {
-        'booking_query': booking_query,
         'pending_booking': pending_booking,
+        'booking_query': booking_query,
         'module': 'bookings',
     }
     context.update(get_date_periods())
     context.update(get_cached_equipment_filterables())
 
-    return render(request, 'equipment/booking-query.html', context)
+    return render(request, 'equipment/bookings/booking-query.html', context)
 
 
 @login_required
@@ -700,7 +709,7 @@ def booking_calendar_view(request):
         'module': 'calendar',
     }
 
-    return render(request, 'equipment/booking-calendar.html', context)
+    return render(request, 'equipment/bookings/booking-calendar.html', context)
 
 
 @login_required
@@ -725,11 +734,12 @@ def booking_detail_view(request, pk):
         ).filter(equipment_booking=booking,).order_by('created_at')    
 
     context = {
+        'pending_booking': has_pending_booking(request.user),
         'booking': booking,
         'booking_items': booking_items,
     }
 
-    return render(request, 'equipment/booking-detail.html', context)
+    return render(request, 'equipment/bookings/booking-detail.html', context)
 
 
 @login_required
@@ -765,6 +775,7 @@ def booking_cost_view(request, pk):
     insure_value = booking_items.aggregate(insure_value=Sum('item__purchase_cost', default=0.0))['insure_value']
 
     context = {
+        'pending_booking': has_pending_booking(request.user),
         'booking': booking,
         'chargeable_days': chargeable_days,
         'booking_items': booking_items,
@@ -775,7 +786,7 @@ def booking_cost_view(request, pk):
         'insure_value': insure_value,
     }
 
-    return render(request, 'equipment/booking-cost.html', context)
+    return render(request, 'equipment/bookings/booking-cost.html', context)
 
 
 @login_required
@@ -808,6 +819,7 @@ def booking_invoice_view(request, pk):
     total_cost_vat = sub_total + vat_total
 
     context = {
+        'pending_booking': has_pending_booking(request.user),
         'booking': booking,
         'chargeable_days': chargeable_days,
         'booking_items': booking_items,
@@ -817,4 +829,4 @@ def booking_invoice_view(request, pk):
         'total_cost_vat': total_cost_vat,
     }
 
-    return render(request, 'equipment/booking-invoice.html', context)
+    return render(request, 'equipment/bookings/booking-invoice.html', context)

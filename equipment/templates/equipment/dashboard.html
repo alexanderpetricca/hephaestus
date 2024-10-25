@@ -13,17 +13,13 @@
 <div class="row mt-5">
     <div class="col-xl-6 mb-4">
         <div class="card h-100">
-            <div class="card-header mb-5"> 
+            <div class="card-header"> 
                 <h2 class="fs-5 m-0 py-4">
                     Today's Bookings
                 </h2>
             </div>
             <div class="card-body">
-                {% if todays_bookings|length == 0 %}
-                <div>
-                    No Bookings
-                </div>
-                {% else %}                    
+                {% if todays_bookings|length > 0 %}                   
                 <div class="table-responsive">
                     <table class="table align-middle">
                         <thead>
@@ -82,17 +78,13 @@
 
     <div class="col-xl-6 mb-4">
         <div class="card h-100">
-            <div class="card-header mb-5">
+            <div class="card-header">
                 <h2 class="fs-5 m-0 py-4">
                     Recent Bookings
                 </h2>
             </div>
             <div class="card-body">
-                {% if recent_bookings|length == 0 %}
-                <div>
-                    Nothing Here
-                </div>
-                {% else %}
+                {% if recent_bookings|length > 0 %}
                 <div class="table-responsive">
                     <table class="table align-middle">
                         <thead>

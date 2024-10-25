@@ -74,6 +74,7 @@ class EquipmentModelsTest(TestCase):
         cls.add_item = Permission.objects.get(codename='add_item')
         cls.change_item = Permission.objects.get(codename='change_item')    
         cls.delete_item = Permission.objects.get(codename='delete_item')
+        cls.assign_item = Permission.objects.get(codename='assign_item')
 
         cls.view_booking = Permission.objects.get(codename='view_equipmentbooking')
         cls.add_booking = Permission.objects.get(codename='add_equipmentbooking')
@@ -167,7 +168,7 @@ class EquipmentModelsTest(TestCase):
         
         response = self.client.get(reverse('equipment_item_query'))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'equipment/item-query.html')
+        self.assertTemplateUsed(response, 'equipment/items/item-query.html')
         self.assertContains(response, 'Equipment Query | Hephaestus')
         
         # Test Filter
@@ -226,7 +227,7 @@ class EquipmentModelsTest(TestCase):
         
         response = self.client.get(reverse('equipment_item_detail', kwargs={'pk':self.item.pk}))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'equipment/item-detail.html')
+        self.assertTemplateUsed(response, 'equipment/items/item-detail.html')
         self.assertContains(response, 'Item Information | Hephaestus')
         self.assertContains(response, 'Test Item 1')
         
@@ -273,7 +274,7 @@ class EquipmentModelsTest(TestCase):
         # GET
         response = self.client.get(reverse('equipment_create_item'))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'equipment/create-item.html')
+        self.assertTemplateUsed(response, 'equipment/items/create-item.html')
         self.assertContains(response, 'Create Item | Hephaestus')
         
         # POST
@@ -338,7 +339,7 @@ class EquipmentModelsTest(TestCase):
         # GET
         response = self.client.get(reverse('equipment_update_item', kwargs={'pk': self.item.pk}))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'equipment/update-item.html')
+        self.assertTemplateUsed(response, 'equipment/items/update-item.html')
         self.assertContains(response, 'Update Item | Hephaestus')
 
         # POST
@@ -401,8 +402,8 @@ class EquipmentModelsTest(TestCase):
         # GET
         response = self.client.get(reverse('equipment_update_service', kwargs={'pk': self.item.pk}))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'equipment/update-item-service.html')
-        self.assertContains(response, 'Equipment Update Service Date | Hephaestus')
+        self.assertTemplateUsed(response, 'equipment/items/update-item-service.html')
+        self.assertContains(response, 'Update Service Date | Hephaestus')
 
         # POST
         data = {
@@ -458,7 +459,7 @@ class EquipmentModelsTest(TestCase):
         # GET
         response = self.client.get(reverse('equipment_delete_item', kwargs={'pk': str(self.item.id)}))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'equipment/delete-item.html')
+        self.assertTemplateUsed(response, 'equipment/items/delete-item.html')
         self.assertContains(response, 'Delete Item | Hephaestus')
 
         # POST
@@ -471,9 +472,64 @@ class EquipmentModelsTest(TestCase):
             self.fail("Item was not deleted.")       
        
     
-    # !! TODO Equipment Assign Item View
-    
-    # !! TODO Equipment Unassign Item View
+    # Assign Item
+    def test_assign_item_logged_out(self):
+        """
+        Tests if user is redirected to login when signed out whilst trying to 
+        access the item assign page.
+        """
+        
+        self.client.logout()
+        
+        response = self.client.get(reverse('equipment_assign_item', kwargs={'pk': str(self.item.id)}))
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, f"{reverse('account_login')}?next=/assign-item/{self.item.id}/")
+        
+        response = self.client.get(f"{reverse('account_login')}?next=/assign-item/{self.item.id}/")
+        self.assertTemplateUsed(response, 'account/login.html')
+        self.assertContains(response, 'Login | Hephaestus')
+
+
+    def test_assign_item_logged_in_no_perm(self):
+        """
+        Tests 403 response is returned when user is logged in without 
+        permission and tries to access the item assign page.
+        """
+
+        self.client.login(email="testuser@email.com", password="testpass123")        
+        
+        response = self.client.get(reverse('equipment_assign_item', kwargs={'pk': str(self.item.id)}))
+        self.assertEqual(response.status_code, 403)    
+
+
+    def test_assign_item_logged_in_with_perm(self):
+        """
+        Tests item assign page is returned when user is logged in 
+        with permission.
+        """
+
+        self.user.user_permissions.add(self.assign_item)
+        self.client.login(email="testuser@email.com", password="testpass123")       
+        
+        # GET
+        response = self.client.get(reverse('equipment_assign_item', kwargs={'pk': str(self.item.id)}))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'equipment/items/assign-item.html')
+        self.assertContains(response, 'Assign Item | Hephaestus')
+
+        # !! TODO
+
+        # POST
+        # response = self.client.post(reverse('equipment_assign_item', kwargs={'pk': str(self.item.id)}))
+        # self.assertEqual(response.status_code, 302)
+
+        # try:
+        #     deleted_item = Item.objects.get(name='Test Item 1', deleted=True)
+        # except Item.DoesNotExist:
+        #     self.fail("Item was not deleted.")
+
+
+    # !! TODO Equipment Unassign Item View              
     
 
     # Booking Summary (View / Create)
@@ -517,7 +573,7 @@ class EquipmentModelsTest(TestCase):
         
         response = self.client.get(reverse('equipment_booking_summary'))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'equipment/booking-summary.html')
+        self.assertTemplateUsed(response, 'equipment/bookings/booking-summary.html')
         self.assertContains(response, 'New Booking | Hephaestus')
         
         # Test new booking form rendered if no pending booking
@@ -591,7 +647,7 @@ class EquipmentModelsTest(TestCase):
 
         response = self.client.get(reverse('equipment_booking_summary_confirm'))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'equipment/booking-confirm.html')
+        self.assertTemplateUsed(response, 'equipment/bookings/booking-confirm.html')
         self.assertContains(response, 'Confirm Booking | Hephaestus')        
         
         # POST
@@ -654,7 +710,7 @@ class EquipmentModelsTest(TestCase):
 
         response = self.client.get(reverse('equipment_booking_summary_cancel'))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'equipment/booking-cancel.html')
+        self.assertTemplateUsed(response, 'equipment/bookings/booking-cancel.html')
         self.assertContains(response, 'Cancel Booking | Hephaestus')
 
         # POST - Test booking is cancelled if booking IS pre-confirmed
@@ -731,7 +787,7 @@ class EquipmentModelsTest(TestCase):
 
         response = self.client.get(reverse('equipment_booking_update_meta', kwargs={'pk': self.booking.pk}))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'equipment/booking-update-meta.html')
+        self.assertTemplateUsed(response, 'equipment/bookings/booking-update-meta.html')
         self.assertContains(response, 'Equipment Update Booking Meta | Hephaestus')
         
         # POST
@@ -791,7 +847,7 @@ class EquipmentModelsTest(TestCase):
         
         response = self.client.get(reverse('equipment_booking_calendar'))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'equipment/booking-calendar.html')
+        self.assertTemplateUsed(response, 'equipment/bookings/booking-calendar.html')
         self.assertContains(response, 'Booking Calendar | Hephaestus')
 
 
@@ -836,7 +892,7 @@ class EquipmentModelsTest(TestCase):
         
         response = self.client.get(reverse('equipment_booking_query'))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'equipment/booking-query.html')
+        self.assertTemplateUsed(response, 'equipment/bookings/booking-query.html')
         self.assertContains(response, 'Booking Query | Hephaestus')
         
         # Test Filter
@@ -896,7 +952,7 @@ class EquipmentModelsTest(TestCase):
         
         response = self.client.get(reverse('equipment_booking_detail', kwargs={'pk': self.booking.id}))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'equipment/booking-detail.html')
+        self.assertTemplateUsed(response, 'equipment/bookings/booking-detail.html')
         self.assertContains(response, 'Booking Information | Hephaestus')
         self.assertContains(response, 'Overview')           
         self.assertContains(response, self.booking.job_reference)
@@ -943,7 +999,7 @@ class EquipmentModelsTest(TestCase):
         
         response = self.client.get(reverse('equipment_booking_cost', kwargs={'pk': self.booking.id}))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'equipment/booking-cost.html')
+        self.assertTemplateUsed(response, 'equipment/bookings/booking-cost.html')
         self.assertContains(response, 'Booking Information | Hephaestus')    
         self.assertContains(response, 'Costs')    
         self.assertContains(response, self.booking.job_reference)
@@ -990,7 +1046,7 @@ class EquipmentModelsTest(TestCase):
         
         response = self.client.get(reverse('equipment_booking_invoice', kwargs={'pk': self.booking.id}))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'equipment/booking-invoice.html')
+        self.assertTemplateUsed(response, 'equipment/bookings/booking-invoice.html')
         self.assertContains(response, f'Invoice - {self.booking.job_reference}')
         self.assertContains(response, 'Invoice')    
         self.assertContains(response, self.booking.job_reference)

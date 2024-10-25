@@ -1,23 +1,23 @@
 {% extends '_base.html' %}
 {% load static %}
-{% block title %}Update Item{% endblock %}
-{% block pageheader %}Update Item{% endblock pageheader %}
+{% block title %}Create Item{% endblock %}
+{% block pageheader %}Create Item{% endblock pageheader %}
 {% block breadcrumb %}
 <li class="breadcrumb-item"><a href="{% url 'equipment_dashboard' %}">Dashboard</a></li>
-<li class="breadcrumb-item active" aria-current="page">Update Item</li>
+<li class="breadcrumb-item active" aria-current="page">Create Item</li>
 {% endblock breadcrumb %}
 {% load crispy_forms_tags %}
 {% block content %}
 <div class="row mt-5">
     <div class="col-lg-6 mx-auto">
         <div class="card">
-            <div class="card-header d-flex flex-column flex-lg-row justify-content-between align-items-center mb-5">
+            <div class="card-header d-flex flex-column flex-lg-row justify-content-between align-items-center">
                 <h2 class="fs-5 m-0 py-4">
-                    Update Item
+                    Create Item
                 </h2>
             </div>
             <div class="card-body">
-                <form method="post" id="update-item-form">
+                <form method="post" id="create-item-form">
                     {% csrf_token %}
 
                     {% if form.non_field_errors %}
@@ -37,7 +37,7 @@
                         {{ form.barcode|as_crispy_field }}
                     </div>
                     <hr>
-
+                    
                     <div class="form-group mb-5">
                         <h5 class="my-4">Notes</h5>
                         {{ form.notes|as_crispy_field }}
@@ -65,8 +65,8 @@
                         <a href="{% url 'equipment_dashboard' %}" class="btn btn-secondary btn-lg-fw">
                             Back
                         </a>
-                        <button type="submit" class="btn btn-primary btn-lg-fw" id="update-item-btn" onclick="buttonSpinner('update-item-form', 'update-item-btn')">
-                            update
+                        <button type="submit" class="btn btn-primary btn-lg-fw" id="create-item-btn" onclick="buttonSpinner('create-item-form', 'create-item-btn')">
+                            Create
                         </button>
                     </div>
                 </form>

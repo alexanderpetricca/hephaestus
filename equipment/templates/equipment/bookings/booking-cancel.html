@@ -1,0 +1,46 @@
+{% extends '_base.html' %}
+{% load static %}
+{% block title %}Cancel Booking{% endblock %}
+{% block pageheader %}Cancel Item{% endblock pageheader %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{% url 'equipment_booking_summary' %}">Booking Summary</a></li>
+<li class="breadcrumb-item active" aria-current="page">Cancel Booking</li>
+{% endblock breadcrumb %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="row mt-5">
+    <div class="col-lg-6 mx-auto mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="fs-5 m-0 py-4">
+                    Confirm Cancellation: <span class="text-danger">{{ booking.job_reference }}</span>
+                </h2>
+            </div>
+            <div class="card-body">
+                <form method="post" id="cancel-booking-form">
+                    {% csrf_token %}
+
+                    <div class="form-group mb-5">
+                        <p>
+                            Are you sure you wish to cancel <span class="text-accented">{{ booking.job_reference  }}</span> ? 
+                        </p>
+                        <p>
+                            This will immediately <strong>cancel this pending booking and remove all added items.</strong> 
+                        </p>
+                        <p>This action is <strong>irreversible</strong>.</p>
+                    </div>
+
+                    <div class="form-group text-center my-3">
+                        <a href="{% url 'equipment_booking_summary' %}" class="btn btn-secondary btn-lg-fw">
+                            Back
+                        </a>
+                        <button type="submit" class="btn btn-danger btn-lg-fw" id="cancel-booking-btn" onclick="buttonSpinner('cancel-booking-form', 'cancel-booking-btn')">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

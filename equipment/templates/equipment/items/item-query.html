@@ -14,7 +14,7 @@
 <div class="row mt-5">
     <div class="col mb-4">
         <div class="card">
-            <div class="card-header d-flex flex-column flex-lg-row justify-content-between align-items-lg-center mb-5">
+            <div class="card-header d-flex flex-column flex-lg-row justify-content-between align-items-lg-center">
                 <h2 class="fs-5 m-0 py-4">
                     Showing {{ item_query.start_index }}-{{ item_query.end_index }} of {{ item_query.paginator.count }} results
                 </h2>
@@ -145,7 +145,6 @@
                                     </button>
                                 </td>
                                 {% endif %}
-                                
                                 <td class="text-end">
                                     <a href="#" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
@@ -265,8 +264,7 @@
     </ul>
 </nav>
 {% endblock content %}
-
 {% block scripts %}
 <script src="{% static 'js/list.min.js' %}"></script>
-<script src="{% static 'js/equipment/equipment.js' %}"></script>
+<script src="{% static 'js/equipment-query.js' %}"></script>
 {% endblock scripts %}
