@@ -1,4 +1,17 @@
 {% extends '_external_base.html' %}
+{% load static %}
+{% block title %}Account Inactive{% endblock title %}
 {% block content %}
-    Account Inactive
+<div class="container h-100">
+    <div class="row h-100 d-flex justify-content-center align-items-center">
+        <div class="col-lg-3">
+            <div class="text-center mb-5">
+                <h1>Account Inactive</h1>
+                <p class="text-center">
+                    This account is currently inactive, please contact an administrator.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock content %}

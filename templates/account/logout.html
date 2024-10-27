@@ -2,16 +2,26 @@
 {% load static %}
 {% block title %}Logout{% endblock title %}
 {% block content %}
-<form method="post">
-    {% csrf_token %}
-    <div>
-        <button type="submit">
-            Log Out
-        </button>
-        <a href="{% url 'account_login' %}">
-            Back
-        </a>
+<div class="container h-100">
+    <div class="row h-100 d-flex justify-content-center align-items-center">
+        <div class="col-lg-3">
+            <div class="text-center mb-5">
+                <h1>Logout</h1>
+            </div>
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group mt-3 mb-4">
+                    <button type="submit" class="btn btn-primary w-100">
+                        Confirm
+                    </button>
+                </div>
+                <div class="text-center">
+                    <a href="{% url 'account_login' %}">
+                        Back
+                    </a>
+                </div>
+            </form>
+        </div>
     </div>
-</form>
+</div>
 {% endblock content %}
-

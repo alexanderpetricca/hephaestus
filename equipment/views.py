@@ -737,6 +737,7 @@ def booking_detail_view(request, pk):
         'pending_booking': has_pending_booking(request.user),
         'booking': booking,
         'booking_items': booking_items,
+        'module': 'bookings',
     }
 
     return render(request, 'equipment/bookings/booking-detail.html', context)
@@ -784,6 +785,7 @@ def booking_cost_view(request, pk):
         'vat_total': vat_total,
         'total_cost_vat': total_cost_vat,
         'insure_value': insure_value,
+        'module': 'bookings',
     }
 
     return render(request, 'equipment/bookings/booking-cost.html', context)

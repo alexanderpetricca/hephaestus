@@ -104,12 +104,14 @@ class CustomResetPasswordKeyForm(ResetPasswordKeyForm):
         super(CustomResetPasswordKeyForm, self).__init__(*args, **kwargs)
 
         self.fields['password1'].label = ""
+        self.fields['password1'].help_text = ""
         self.fields['password1'].widget.attrs.update({
             'placeholder': 'New Password',
             'class': 'form-control',
         })
         
         self.fields['password2'].label = ""
+        self.fields['password1'].help_text = ""
         self.fields['password2'].widget.attrs.update({
             'placeholder': 'Confirm New Password',
             'class': 'form-control',
