@@ -45,6 +45,11 @@
                                     </button>
                                 </th>
                                 <th>
+                                    <button class="btn btn-link listjs-sorter" data-sort="sort-mount" type="button">
+                                        Mount
+                                    </button>
+                                </th>
+                                <th>
                                     <button class="btn btn-link listjs-sorter" data-sort="sort-category" type="button">
                                         Category
                                     </button>
@@ -84,7 +89,10 @@
                                     {{ item.manufacturer }}
                                 </td>
                                 <td class="sort-name">
-                                    {{ item.name }} {{ item.mount|default_if_none:"" }}
+                                    {{ item.name }}
+                                </td>
+                                <td class="sort-mount">
+                                    {{ item.mount|default_if_none:"n/a" }}
                                 </td>
                                 <td class="sort-category">
                                     {{ item.category }}

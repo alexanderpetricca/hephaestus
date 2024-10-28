@@ -12,6 +12,7 @@ function initializeListJS() {
         valueNames: [
             'sort-manufacturer',
             'sort-name',
+            'sort-mount',
             'sort-category',
             'sort-serial',
             'sort-assigned',
