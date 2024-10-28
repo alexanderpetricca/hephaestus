@@ -35,37 +35,37 @@
                         <thead>
                             <tr>
                                 <th>
-                                    <button class="btn btn-link" data-sort="sort-manufacturer" type="button">
+                                    <button class="btn btn-link listjs-sorter" data-sort="sort-manufacturer" type="button">
                                         Manufacturer
                                     </button>
                                 </th>
                                 <th>
-                                    <button class="btn btn-link" data-sort="sort-name" type="button">
+                                    <button class="btn btn-link listjs-sorter" data-sort="sort-name" type="button">
                                         Name
                                     </button>
                                 </th>
                                 <th>
-                                    <button class="btn btn-link" data-sort="sort-category" type="button">
+                                    <button class="btn btn-link listjs-sorter" data-sort="sort-category" type="button">
                                         Category
                                     </button>
                                 </th>
                                 <th>
-                                    <button class="btn btn-link" data-sort="sort-serial" type="button">
-                                        Serial Number
+                                    <button class="btn btn-link listjs-sorter" data-sort="sort-serial" type="button">
+                                        Serial
                                     </button>
                                 </th>
                                 <th>
-                                    <button class="btn btn-link" data-sort="sort-assigned" type="button">
+                                    <button class="btn btn-link listjs-sorter" data-sort="sort-assigned" type="button">
                                         Assignee
                                     </button>
                                 </th>  
                                 <th>
-                                    <button class="btn btn-link" data-sort="sort-status" type="button">
+                                    <button class="btn btn-link listjs-sorter" data-sort="sort-status" type="button">
                                         Status
                                     </button>
                                 </th>
                                 <th>
-                                    <button class="btn btn-link" data-sort="sort-availability" type="button">
+                                    <button class="btn btn-link listjs-sorter" data-sort="sort-availability" type="button">
                                         Availability
                                     </button>
                                 </th>
@@ -100,11 +100,11 @@
 
                                 <td class="sort-status" data-sort-status="{{ item.get_status_display }}">
                                     {% if item.status == 'POOL' %}
-                                    <span>{{ item.get_status_display }}</span>
+                                    <span class="badge text-bg-warning">{{ item.get_status_display }}</span>
                                     {% elif item.status == 'ASSIGNED' %}
-                                    <span>{{ item.get_status_display }}</span>
+                                    <span class="badge text-bg-info">{{ item.get_status_display }}</span>
                                     {% else %}
-                                    <span>{{ item.get_status_display }}</span>                                    
+                                    <span class="badge text-bg-warning">{{ item.get_status_display }}</span>                                    
                                     {% endif %}
                                 </td>
 
@@ -266,5 +266,5 @@
 {% endblock content %}
 {% block scripts %}
 <script src="{% static 'js/list.min.js' %}"></script>
-<script src="{% static 'js/equipment-query.js' %}"></script>
+<script src="{% static 'js/item-query.js' %}"></script>
 {% endblock scripts %}

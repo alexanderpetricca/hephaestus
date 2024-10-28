@@ -27,7 +27,7 @@
                         <thead>
                             <tr>
                                 <th>
-                                    <button class="btn btn-link" data-sort="sort-reference" type="button">
+                                    <button class="btn btn-link listjs-sorter" data-sort="sort-reference" type="button">
                                         Reference
                                     </button>
                                 </th>
@@ -37,17 +37,17 @@
                                     </button>
                                 </th>
                                 <th>
-                                    <button class="btn btn-link" data-sort="sort-start" type="button">
+                                    <button class="btn btn-link listjs-sorter" data-sort="sort-start" type="button">
                                         Start
                                     </button>
                                 </th>
                                 <th>
-                                    <button class="btn btn-link" data-sort="sort-end" type="button">
+                                    <button class="btn btn-link listjs-sorter" data-sort="sort-end" type="button">
                                         End
                                     </button>
                                 </th>
                                 <th>
-                                    <button class="btn btn-link" data-sort="sort-status" type="button">
+                                    <button class="btn btn-link listjs-sorter" data-sort="sort-status" type="button">
                                         Status
                                     </button>
                                 </th>
@@ -68,17 +68,17 @@
                                 <td class="sort-bookedby">
                                     {{ booking.created_by }}
                                 </td>
-                                <td class="sort-start">
+                                <td class="sort-start" data-sort-start="{{ booking.start_at|date:'SHORT_DATE_FORMAT' }}">
                                     {{ booking.start_at }}
                                 </td>
-                                <td class="sort-end">
+                                <td class="sort-end" data-sort-end="{{ booking.end_at|date:'SHORT_DATE_FORMAT' }}">
                                     {{ booking.end_at }}
                                 </td>
                                 <td class="sort-status">
                                     {% if booking.status == 'CANCELLED' %}
-                                    <span class="status-badge bg-red">{{ booking.get_status_display }}</span>
+                                    <span class="badge text-bg-danger">{{ booking.get_status_display }}</span>
                                     {% else %}
-                                    <span class="status-badge bg-green">{{ booking.get_status_display }}</span>
+                                    <span class="badge text-bg-success">{{ booking.get_status_display }}</span>
                                     {% endif %}
                                 </td>
                                 <td class="sort-end">
@@ -181,7 +181,7 @@
     </ul>
 </nav>
 {% endblock content %}
-
 {% block scripts %}
 <script src="{% static 'js/list.min.js' %}"></script>
+<script src="{% static 'js/booking-query.js' %}"></script>
 {% endblock scripts %}

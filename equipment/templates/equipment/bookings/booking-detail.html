@@ -33,7 +33,7 @@
 </div>
 <div class="row">
     <div class="col-lg-6 mb-4">
-        <div class="card">
+        <div class="card h-100">
             <div class="card-header">
                 <h2 class="fs-5 m-0 py-4">
                     Overview
@@ -84,7 +84,7 @@
         </div>
     </div>
     <div class="col-lg-6 mb-4">
-        <div class="card">
+        <div class="card h-100">
             <div class="card-header">
                 <h2 class="fs-5 m-0 py-4">
                     Logistics
@@ -106,10 +106,6 @@
                         <tr>
                             <td class="ps-1 fw-bold">Job Number</td>
                             <td class="ps-3">{{ booking.job_number|default_if_none:"n/a" }}</td>
-                        </tr>                        
-                        <tr>
-                            <td class="ps-1 fw-bold">Client Type</td>
-                            <td class="ps-3">{{ booking.get_client_type_display|default_if_none:"n/a" }}</td>
                         </tr>
                         <tr>
                             <td class="ps-1 fw-bold">Booking Start</td>
