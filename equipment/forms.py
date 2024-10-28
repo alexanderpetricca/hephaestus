@@ -48,7 +48,7 @@ class CreateUpdateItemForm(forms.ModelForm):
             'mount': 'Optional. e.g. EF.',
             'model_number': 'Optional. Manufacturers model number.',
             'serial_number': 'Optional. Manufacturers unqiue serial number.',
-            'barcode': 'Optional. Unique barcode number. Leave blank to let StudioHub generate.',
+            'barcode': 'Optional. Unique barcode number. Leave blank to auto generate.',
             'notes': 'Optional. Internal notes & references.',
             'hire_day_rate': 'Optional. Leaving this blank will cause it to be valued at 0.0 on invoices.',
             'last_service_date': "Optional.",
@@ -57,6 +57,7 @@ class CreateUpdateItemForm(forms.ModelForm):
         widgets = {
             'purchase_date': DateInput,
             'last_service_date': DateInput,
+            'manufacturer': forms.Select(attrs={'class': 'form-select'}),
         }
 
 

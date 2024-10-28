@@ -75,3 +75,28 @@
     </div>
 </div>
 {% endblock content %}
+{% block scripts %}
+<script src="{% static 'js/choices.min.js' %}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const categoryField = document.getElementById("id_category");
+        if (categoryField) {
+            new Choices(categoryField, {
+                searchEnabled: true,
+                shouldSort: false,
+                placeholderValue: 'Select a category',
+                allowHTML: false
+            });
+        }
+        const manufacturerField = document.getElementById("id_manufacturer");
+        if (manufacturerField) {
+            new Choices(manufacturerField, {
+                searchEnabled: true,
+                shouldSort: false,
+                placeholderValue: 'Select a manufacturer',
+                allowHTML: false
+            });
+        }        
+    });
+</script>
+{% endblock scripts %}

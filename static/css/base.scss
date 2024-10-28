@@ -1,3 +1,9 @@
+// Bootstrap CSS
+@use './bootstrap/bootstrap.scss';
+
+// Choices CSS
+@use './choicesjs.scss';
+
 body {
     font-size: 14px;
 }

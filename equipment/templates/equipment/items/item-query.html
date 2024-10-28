@@ -92,7 +92,7 @@
                                     {{ item.name }}
                                 </td>
                                 <td class="sort-mount">
-                                    {{ item.mount|default_if_none:"n/a" }}
+                                    {{ item.mount|default_if_none:"-" }}
                                 </td>
                                 <td class="sort-category">
                                     {{ item.category }}
@@ -224,12 +224,12 @@
     <ul class="pagination">
         {% if item_query.has_previous %}
         <li class="page-item">
-            <a class="page-link px-4" aria-label="Last">
+            <a class="page-link px-4" href="{% relative_url item_query.paginator_start_index 'page' request.GET.urlencode %}" aria-label="Last">
                 <span aria-hidden="true">&laquo;</span>
             </a>
         </li>
         <li class="page-item">
-            <a class="page-link px-4" href="#" aria-label="Previous">
+            <a class="page-link px-4" href="{% relative_url item_query.previous_page_number 'page' request.GET.urlencode %}" aria-label="Previous">
                 <span aria-hidden="true">&lsaquo;</span>
             </a>
         </li>
@@ -252,12 +252,12 @@
         </li>
         {% if item_query.has_next %}
         <li class="page-item">
-            <a class="page-link px-4" href="#" aria-label="Next">
+            <a class="page-link px-4" href="{% relative_url item_query.next_page_number 'page' request.GET.urlencode %}" aria-label="Next">
                 <span aria-hidden="true">&rsaquo;</span>
             </a>
         </li>
         <li class="page-item">
-            <a class="page-link px-4" href="#" aria-label="Last">
+            <a class="page-link px-4" href="{% relative_url item_query.paginator.num_pages 'page' request.GET.urlencode %}" aria-label="Last">
                 <span aria-hidden="true">&raquo;</span>
             </a>
         </li>
