@@ -71,6 +71,10 @@
                         </tbody>
                     </table>
                 </div>
+                {% else %}
+                <div class="h-100 d-flex justify-content-center align-items-center">
+                    No Bookings
+                </div>                
                 {% endif %}
             </div>
         </div>
@@ -135,6 +139,10 @@
                             {% endfor %}
                         </tbody>
                     </table>
+                </div>
+                {% else %}
+                <div class="h-100 d-flex justify-content-center align-items-center">
+                    No Bookings
                 </div>
                 {% endif %}
             </div>
