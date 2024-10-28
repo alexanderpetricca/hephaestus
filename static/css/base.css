@@ -12000,7 +12000,6 @@ textarea.form-control-lg {
   display: block;
   width: 100%;
   padding: 10px;
-  border-bottom: 1px solid #ddd;
   background-color: #212529;
   margin: 0;
 }
@@ -12017,6 +12016,7 @@ textarea.form-control-lg {
   width: 20px;
   border-radius: 10em;
   opacity: 0.25;
+  fill: white;
 }
 .choices[data-type*=select-one] .choices__button:focus, .choices[data-type*=select-one] .choices__button:hover {
   opacity: 1;

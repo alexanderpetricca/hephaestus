@@ -43,7 +43,6 @@
             display: block;
             width: 100%;
             padding: 10px;
-            border-bottom: 1px solid #ddd;
             background-color: bs.$body-bg-dark;
             margin: 0;
         }
@@ -61,6 +60,7 @@
             width: 20px;
             border-radius: 10em;
             opacity: 0.25;
+            fill: white;
 
             &:focus, &:hover {
                 opacity: 1;
@@ -83,7 +83,7 @@
             top: 50%;
             margin-top: -2.5px;
             pointer-events: none;
-
+            
             &.is-open {
                 border-color: transparent transparent #333;
                 margin-top: -7.5px;
