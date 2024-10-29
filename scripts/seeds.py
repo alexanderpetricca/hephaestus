@@ -5,6 +5,41 @@ from django.utils import timezone
 from equipment.models import Manufacturer, Category, Item
 
 
+# python manage.py runscript seeds
+
+def run():
+    """
+    Creates random items for development.
+    """
+
+    for i in range(750):
+        
+        random_item = random.choices(items)[0]
+
+        category, created = Category.objects.get_or_create(
+            name = random_item.get('category', None)
+        ) 
+
+        manufacturer, created = Manufacturer.objects.get_or_create(
+            name = random_item.get('manufacturer', None)
+        )
+        
+        numbers = range(0,9)
+        serial = ''.join([str(random.choices(numbers)[0]) for i in range(10)])
+
+        new_item = Item.objects.create(
+            manufacturer = manufacturer,
+            category = category,
+            name = random_item.get('name', None),
+            mount = random_item.get('mount', None),
+            serial_number = serial,
+            purchase_date = random_item.get('purchase_date', None),
+            hire_day_rate = random_item.get('hire_day_rate', None),
+        )
+
+        print(f'Created {new_item}...')
+
+
 today = timezone.now().date()
 
 items = [
@@ -78,38 +113,3 @@ items = [
         'hire_day_rate': 5.00,
     },
 ]
-
-
-# python manage.py runscript seeds
-
-def run():
-    """
-    Creates random items for development.
-    """
-
-    for i in range(750):
-        
-        random_item = random.choices(items)[0]
-
-        category, created = Category.objects.get_or_create(
-            name = random_item.get('category', None)
-        ) 
-
-        manufacturer, created = Manufacturer.objects.get_or_create(
-            name = random_item.get('manufacturer', None)
-        )
-        
-        numbers = range(0,9)
-        serial = ''.join([str(random.choices(numbers)[0]) for i in range(10)])
-
-        new_item = Item.objects.create(
-            manufacturer = manufacturer,
-            category = category,
-            name = random_item.get('name', None),
-            mount = random_item.get('mount', None),
-            serial_number = serial,
-            purchase_date = random_item.get('purchase_date', None),
-            hire_day_rate = random_item.get('hire_day_rate', None),
-        )
-
-        print(f'Created {new_item}...')

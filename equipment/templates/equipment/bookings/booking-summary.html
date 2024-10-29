@@ -40,27 +40,32 @@
                         <thead>
                             <tr>
                                 <th>
-                                    <button class="btn btn-link" data-sort="sort-manufacturer" type="button">
+                                    <button class="btn btn-link listjs-sorter" data-sort="sort-manufacturer" type="button">
                                         Manufacturer
                                     </button>
                                 </th>
                                 <th>
-                                    <button class="btn btn-link" data-sort="sort-name" type="button">
+                                    <button class="btn btn-link listjs-sorter" data-sort="sort-name" type="button">
                                         Name
                                     </button>
                                 </th>
                                 <th>
-                                    <button class="btn btn-link" data-sort="sort-category" type="button">
+                                    <button class="btn btn-link listjs-sorter" data-sort="sort-mount" type="button">
+                                        Mount
+                                    </button>
+                                </th>
+                                <th>
+                                    <button class="btn btn-link listjs-sorter" data-sort="sort-category" type="button">
                                         Category
                                     </button>
                                 </th>
                                 <th>
-                                    <button class="btn btn-link" data-sort="sort-serial" type="button">
+                                    <button class="btn btn-link listjs-sorter" data-sort="sort-serial" type="button">
                                         Serial Number
                                     </button>
                                 </th>
                                 <th>
-                                    <button class="btn btn-link" data-sort="sort-availability" type="button">
+                                    <button class="btn btn-link listjs-sorter" data-sort="sort-availability" type="button">
                                         Availability
                                     </button>
                                 </th>
@@ -80,6 +85,9 @@
                                 </td>
                                 <td class="sort-name">
                                     {{ booking_item.item.name }} {{ item.mount|default_if_none:"" }}
+                                </td>
+                                <td class="sort-mount">
+                                    {{ booking_item.item.mount|default_if_none:"-" }}
                                 </td>
                                 <td class="sort-category">
                                     {{ booking_item.item.category }}
@@ -185,5 +193,5 @@
 {% endblock content %}
 {% block scripts %}
 <script src="{% static 'js/list.min.js' %}"></script>
-<script src="{% static 'js/equipment-query.js' %}"></script>
+<script src="{% static 'js/equipment/booking-summary.js' %}"></script>
 {% endblock scripts %}

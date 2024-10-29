@@ -1,18 +1,18 @@
-
 function initializeListJS() {
     let options = {
         valueNames: [
-            'sort-reference',
-            'sort-bookedby',
-            { attr: 'data-sort-start', name: 'sort-start'},
-            { attr: 'data-sort-end', name: 'sort-end'},
-            'sort-status',
+            'sort-manufacturer',
+            'sort-name',
+            'sort-mount',
+            'sort-category',
+            'sort-serial',
+            'sort-availability',
         ],
         sortClass: 'listjs-sorter',
     };
 
     // Initialize List.js and store it in a global variable
-    window.productList = new List('bookings', options);
+    window.productList = new List('items', options);
 }
 
 // Call the initialization function when the page loads

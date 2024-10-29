@@ -81,7 +81,7 @@
                                     <span class="badge text-bg-success">{{ booking.get_status_display }}</span>
                                     {% endif %}
                                 </td>
-                                <td class="sort-end">
+                                <td>
                                     <a href="{% url 'equipment_booking_detail' booking.pk %}" class="btn btn-primary">
                                         View
                                     </a>
@@ -187,5 +187,5 @@
 {% endblock content %}
 {% block scripts %}
 <script src="{% static 'js/list.min.js' %}"></script>
-<script src="{% static 'js/booking-query.js' %}"></script>
+<script src="{% static 'js/equipment/booking-query.js' %}"></script>
 {% endblock scripts %}

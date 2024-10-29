@@ -12076,17 +12076,4 @@ textarea.form-control-lg {
 }
 .choices .choices__list--dropdown .choices__item--selectable.is-highlighted, .choices .choices__list[aria-expanded] .choices__item--selectable.is-highlighted {
   background-color: #0d6efd;
-}
-
-body {
-  font-size: 14px;
-}
-
-a, .btn-link {
-  text-decoration: none;
-}
-
-.btn {
-  min-width: 120px;
-  height: 38px;
-}/*# sourceMappingURL=base.css.map */
+}/*# sourceMappingURL=choicesjs.css.map */

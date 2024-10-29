@@ -57,7 +57,6 @@ class CreateUpdateItemForm(forms.ModelForm):
         widgets = {
             'purchase_date': DateInput,
             'last_service_date': DateInput,
-            'manufacturer': forms.Select(attrs={'class': 'form-select'}),
         }
 
 
