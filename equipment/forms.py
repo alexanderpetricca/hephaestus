@@ -101,12 +101,17 @@ class CreateUpdateBookingForm(forms.ModelForm):
         ]
 
         labels = {
+            'job_reference': 'Job Reference',
+            'job_number': 'Job Number',
             'start_at': 'Booking Start',
             'end_at': 'Booking End',
         }
 
         help_texts = {
-            'job_reference': 'i.e. job name / number.'
+            'job_reference': 'Required.',
+            'job_number': 'Optional.',
+            'start_at': 'Required.',
+            'end_at': 'Required.',            
         }
 
         widgets = {
