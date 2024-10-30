@@ -1,10 +1,10 @@
 {% extends '_base.html' %}
 {% load static %}
-{% block title %}Update Service Date{% endblock %}
-{% block pageheader %}Update Service Date{% endblock pageheader %}
+{% block title %}Update Repair Status{% endblock %}
+{% block pageheader %}Update Repair Status{% endblock pageheader %}
 {% block breadcrumb %}
 <li class="breadcrumb-item"><a href="{% url 'equipment_dashboard' %}">Dashboard</a></li>
-<li class="breadcrumb-item active" aria-current="page">Update Service Date</li>
+<li class="breadcrumb-item active" aria-current="page">Update Repair Status</li>
 {% endblock breadcrumb %}
 {% load crispy_forms_tags %}
 {% block content %}
@@ -13,19 +13,19 @@
         <div class="card">
             <div class="card-header d-flex flex-column flex-lg-row justify-content-between align-items-center">
                 <h2 class="fs-5 m-0 py-4">
-                    Update Service Date: <span class="text-primary">{{ item.manufacturer }} {{ item.name }}</span>
+                    Update Repair Status: <span class="text-primary">{{ item.manufacturer }} {{ item.name }}</span>
                 </h2>
             </div>
             <div class="card-body">
                 <form method="post" id="update-item-form">
                     {% csrf_token %}
-                    {% if form.non_field_errors %}
                     <div class="form-group mb-5">
-                        {{ form.non_field_errors }}
-                    </div>
-                    {% endif %}
-                    <div class="form-group mb-5">
-                        {{ form.last_service_date|as_crispy_field }}
+                        <p>
+                            Are you sure you wish to change the status of {{ item.manufacturer }} {{ item.name }} </span> ? 
+                        </p>
+                        <p>
+                            This will immediately change the status of this item to <span class="text-primary fw-bold">{{ new_status|upper }}</span>.
+                        </p>
                     </div>
                     <div class="form-group text-center my-3">
                         <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-secondary">

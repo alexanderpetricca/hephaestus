@@ -15,11 +15,12 @@ from django.db.models import (
     Sum,
     F,
     ExpressionWrapper,
-    FloatField
+    FloatField,
+    Q
 )
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.contrib import messages
 from django.http import HttpResponseNotAllowed
 from django.utils import timezone
@@ -90,7 +91,7 @@ def item_query_view(request):
                         Exists(booked_items_subquery), then=Value(False)  # Mark as unavailable if booked
                     ),
                     When(
-                        assigned_to__isnull=False, then=Value(False)  # Mark as unavailable if assigned
+                        ~Q(status='POOL'), then=Value(False), # Mark as unavailable if status != POOL
                     ),
                     default=Value(True),  # Otherwise, mark as available
                     output_field=BooleanField()
@@ -118,7 +119,7 @@ def item_query_view(request):
     except PageNotAnInteger:
         item_query = paginator.page(1)
     except EmptyPage:
-        item_query = paginator.page(paginator.num_pages)     
+        item_query = paginator.page(paginator.num_pages)
 
     context = {
         'pending_booking': pending_booking,
@@ -331,6 +332,34 @@ def update_item_service_view(request, pk):
 
     return render(request, 'equipment/items/update-item-service.html', context)
 
+
+@login_required
+@permission_required('equipment.change_item', raise_exception=True) 
+def update_item_repair_view(request, pk):
+    
+    item = get_object_or_404(Item, id=pk)
+
+    if item.status in ('REPAIR', 'POOL'):
+
+        new_status = "POOL" if item.status == 'REPAIR' else 'REPAIR'
+        
+        if request.method == 'POST':
+            item.toggle_repair()
+            
+            messages.success(request, 'Item repair status successfully toggled.')
+            next = request.GET.get('next', reverse('equipment_item_query'))
+            return redirect(next)
+
+        context = {
+            'item': item,
+            'new_status': new_status,
+        }
+
+        return render(request, 'equipment/items/update-item-repair.html', context)
+    else:
+        raise PermissionDenied
+
+
 @login_required
 @permission_required('equipment.add_equipmentbooking', raise_exception=True)
 def add_to_booking_view(request, pk):
@@ -428,6 +457,9 @@ def booking_summary_view(request):
                     When(
                         Exists(booked_items_subquery), then=Value(False)  # Mark as unavailable if booked
                     ),
+                    When(
+                        ~Q(item__status='POOL'), then=Value(False), # Mark as unavailable if status != POOL
+                    ),                    
                     default=Value(True),  # Otherwise, mark as available
                     output_field=BooleanField()
                 )
@@ -542,11 +574,11 @@ def booking_update_view(request, pk):
 
         booking = get_object_or_404(EquipmentBooking, id=pk)
 
-        if booking.start_at > timezone.now():
+        if booking.start_at.date() >= timezone.now().date() and booking.created_by == request.user:
             booking.revert_to_pending()
             return redirect(reverse('equipment_booking_summary'))
         else:
-            error = 'Bookings cannot be updated if they occurred in the past.'
+            error = 'You cannot update this booking.'
 
     else:
         error = 'You cannot update a booking whilst you have one outstanding.'
@@ -579,6 +611,7 @@ def booking_update_meta_view(request, pk):
         'pending_booking': has_pending_booking(request.user),
         'form': form,
         'booking': booking,
+        'module': 'bookings',
     }
 
     return render(request, 'equipment/bookings/booking-update-meta.html', context)
@@ -601,6 +634,7 @@ def booking_cancel_view(request, pk):
     context = {
         'pending_booking': has_pending_booking(request.user),
         'booking': booking,
+        'module': 'bookings',
     }
 
     return render(request, 'equipment/bookings/booking-cancel.html', context)

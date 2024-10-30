@@ -11,6 +11,11 @@
             </div>
             <form method="post">
                 {% csrf_token %}
+                {% if form.non_field_errors %}
+                <div class="form-group d-flex justify-content-center text-danger">
+                    {{ form.non_field_errors }}
+                </div>
+                {% endif %}
                 <div class="form-group my-3">
                     {{ form.login|as_crispy_field }}
                     {{ form.password|as_crispy_field }}

@@ -192,6 +192,19 @@ class Item(models.Model):
         self.save()
 
 
+    def toggle_repair(self):
+        """
+        Toggles the item status between repair and pool.
+        """
+
+        if self.status == 'REPAIR':
+            self.status = 'POOL'
+        else:
+            self.status = 'REPAIR'
+            
+        self.save()        
+
+
     def soft_delete(self):
         """
         Soft deletes the item, logging the time it was deleted.
@@ -275,9 +288,13 @@ class EquipmentBooking(models.Model):
         # Check if booking contains at least one item
         if booked_items.count() < 1:
             raise ValidationError('Bookings must contain at least one item.')
-
+        
         # Check if any of the items in the current booking are already booked during the same date and time
         for item in booked_items:
+
+            if item.item.status != 'POOL':
+                raise ValidationError(f"Item '{item.item.name}' is not available for booking as it's current status is '{item.item.status}'.")
+
             conflicting_bookings = EquipmentBookingItem.objects.filter(
                 item=item.item,
                 equipment_booking__start_at__lt=booking_end,
@@ -287,8 +304,8 @@ class EquipmentBooking(models.Model):
 
             if conflicting_bookings.exists():
                 raise ValidationError(f"One or more items is already booked for that period.")
-
-        # If no conflicts, booking is valid
+            
+        # If no conflicts, the booking is valid
         return True
     
 

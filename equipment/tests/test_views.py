@@ -529,7 +529,10 @@ class EquipmentModelsTest(TestCase):
         #     self.fail("Item was not deleted.")
 
 
-    # !! TODO Equipment Unassign Item View              
+    # !! TODO Equipment Unassign Item View
+
+
+    # !! TODO Equipment Toggle Repair View         
     
 
     # Booking Summary (View / Create)

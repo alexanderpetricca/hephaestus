@@ -97,9 +97,9 @@
                                 </td>
                                 <td class="sort-availability" data-sort-status="{{ item.get_status_display }}">
                                     {% if booking_item.available %}
-                                    <span class="status-badge bg-green">Available</span>
+                                    <span class="badge text-bg-success">Available</span>
                                     {% else %}
-                                    <span class="status-badge bg-red">Not Available</span>
+                                    <span class="badge text-bg-danger">Not Available</span>
                                     {% endif %}
                                 </td>
                                 <td>
@@ -113,16 +113,16 @@
                                 </td>                                                     
                                 <td class="text-end">
                                     <a href="#" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="18" height="18" fill="currentColor">
                                             <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
                                         </svg>
                                     </a>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="currentColor" class="dropdown-icon me-2">
+                                        <a class="dropdown-item" href="{% url 'equipment_item_detail' booking_item.item.pk %}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="18" height="18" fill="currentColor" class="me-2">
                                                 <path d="M453-280h60v-240h-60v240Zm26.982-314q14.018 0 23.518-9.2T513-626q0-14.45-9.482-24.225-9.483-9.775-23.5-9.775-14.018 0-23.518 9.775T447-626q0 13.6 9.482 22.8 9.483 9.2 23.5 9.2Zm.284 514q-82.734 0-155.5-31.5t-127.266-86q-54.5-54.5-86-127.341Q80-397.681 80-480.5q0-82.819 31.5-155.659Q143-709 197.5-763t127.341-85.5Q397.681-880 480.5-880q82.819 0 155.659 31.5Q709-817 763-763t85.5 127Q880-563 880-480.266q0 82.734-31.5 155.5T763-197.684q-54 54.316-127 86Q563-80 480.266-80Zm.234-60Q622-140 721-239.5t99-241Q820-622 721.188-721 622.375-820 480-820q-141 0-240.5 98.812Q140-622.375 140-480q0 141 99.5 240.5t241 99.5Zm-.5-340Z"/>
                                             </svg>
-                                            Information
+                                            Item Information
                                         </a>
                                     </div>
                                 </td>
@@ -138,7 +138,7 @@
                     <a href="{% url 'equipment_booking_summary_cancel' %}" class="btn btn-danger my-1 my-lg-0 me-lg-2">
                         Cancel
                     </a>
-                    <a href="{% url 'equipment_booking_update_meta' pending_booking.pk %}" class="btn btn-primary my-1 my-lg-0">
+                    <a href="{% url 'equipment_booking_update_meta' pending_booking.pk %}" class="btn btn-warning my-1 my-lg-0">
                         Modify
                     </a>
                     <a href="{% url 'equipment_booking_summary_confirm' %}" class="btn btn-primary my-1 my-lg-0 ms-lg-2">
